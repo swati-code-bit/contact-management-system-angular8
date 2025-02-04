@@ -1,0 +1,107 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Table Styles */
+.contacts-table {
+    font-size: medium;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.contacts-header {
+    background-color: #0a5eb0;
+    color: white;
+    text-align: left;
+    padding: 10px;
+}
+
+.contact-row:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.contact-cell {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Subcategory Styles */
+.subcategory {
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Button Styles for Floating Buttons */
+mat-fab {
+    border-radius: 8px; /* Slightly rounded corners for square-like buttons */
+    box-shadow: none; /* Remove default shadow */
+    width: 40px;      /* Set a fixed width for uniform square buttons */
+    height: 40px;     /* Ensure consistent height to match the width */
+    padding: 0;       /* Remove padding to ensure the size is consistent */
+    display: flex;
+    justify-content: center;  /* Horizontally center the icon */
+    align-items: center;      /* Vertically center the icon */
+}
+
+/* Styling for Sort Button (Green) */
+.sort-btn {
+    background-color: #d4f5e1; /* Light green shade */
+    color: #4CAF50; /* Darker green icon */
+}
+
+.sort-btn mat-icon {
+    font-size: 20px;
+}
+
+/* Styling for Edit Button (Blue) */
+.edit-btn {
+    background-color: #d9eaf7; /* Light blue shade */
+    color: #0a5eb0; /* Dark blue icon */
+}
+
+.edit-btn mat-icon {
+    font-size: 20px;
+}
+
+/* Styling for Delete Button (Red) */
+.delete-btn {
+    background-color: #fbd2d0; /* Light red shade */
+    color: #f44336; /* Dark red icon */
+}
+
+.delete-btn mat-icon {
+    font-size: 20px;
+}
+
+/* Hover Effect for Buttons */
+.sort-btn:hover {
+    background-color: #b2e6a1; /* Darker green shade on hover */
+}
+
+.edit-btn:hover {
+    background-color: #b3d9f7; /* Darker blue shade on hover */
+}
+
+.delete-btn:hover {
+    background-color: #f7a7a1; /* Darker red shade on hover */
+}
+
+/* No Contacts Message */
+div[ngIf] {
+    text-align: center;
+    font-size: 1.2em;
+    color: #888;
+    margin: 20px 0;
+}
+
+/* Table Row Action Buttons */
+td.contact-cell button {
+    margin-right: 10px;
+}

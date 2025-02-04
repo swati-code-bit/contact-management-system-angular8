@@ -1,0 +1,110 @@
+.add-contact-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;  /* Light grey background */
+  border: 1px solid #ddd;     /* Grey border around the form */
+  border-radius: 8px;         /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Light shadow */
+  font-size: 1rem;  /* Global font size */
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 1.5rem;  /* Larger font size for labels */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 14px 18px;  /* More padding for better spacing */
+  border: 1px solid #ccc;  /* Light grey border */
+  border-radius: 4px;  /* Rounded corners */
+  box-sizing: border-box;
+  background-color: #fff;  /* White background */
+  font-size: 1.1rem;  /* Slightly larger font size for inputs */
+  transition: all 0.3s ease-in-out;  /* Smooth transition for focus effect */
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="date"]::placeholder,
+textarea::placeholder {
+  font-size: 1rem;  /* Larger font size for placeholders */
+  color: #6c757d;   /* Lighter color for placeholders */
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+  border-color: #007bff;  /* Blue border on focus */
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);  /* Blue glow on focus */
+}
+
+textarea {
+  height: 120px;  /* Larger height for textareas */
+  resize: vertical;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 1rem;  /* Larger error message font */
+  margin-top: 5px;
+}
+
+.form-text {
+  color: #6c757d;
+  font-size: 1rem;  /* Larger helper text font */
+  margin-top: 5px;
+  display: block;
+}
+
+.form-actions {
+  margin-top: 30px;
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 12px 24px;  /* Larger padding for buttons */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1.1rem;  /* Larger font size for buttons */
+  transition: background-color 0.3s;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+button[type="button"] {
+  background-color: #6c757d;
+  color: white;
+}
+
+button[type="button"]:hover {
+  background-color: #545b62;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

@@ -1,0 +1,160 @@
+<mat-accordion>
+  <mat-expansion-panel
+    [expanded]="panelOpenState"
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>Filter by Category</mat-panel-title>
+      <mat-panel-description>
+        <!-- {{ contactsDiscovered }} contacts discovered -->
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div class="filter-container">
+      <div class="filter-header">
+        <div class="filter-actions">
+          <button class="filter-action-button apply" (click)="applyFilters()">
+            Apply
+          </button>
+          <button class="filter-action-button clear" (click)="clearFilters()">
+            Clear
+          </button>
+        </div>
+      </div>
+
+      <div class="category-row">
+        <!-- Personal Category -->
+        <div class="category-column">
+          <div class="category-section">
+            <button
+              class="category-button"
+              [ngClass]="{
+                filled: isAllPersonalSelected(),
+                outlined: !isAllPersonalSelected()
+              }"
+              (click)="togglePersonal()"
+            >
+              Personal
+            </button>
+            <div class="category-content">
+              <div class="category-item">
+                <input
+                  type="checkbox"
+                  id="family"
+                  name="family"
+                  [(ngModel)]="personal.family"
+                />
+                <label for="family">Family</label>
+              </div>
+              <div class="category-item">
+                <input
+                  type="checkbox"
+                  id="friends"
+                  name="friends"
+                  [(ngModel)]="personal.friends"
+                />
+                <label for="friends">Friends</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Professional Category -->
+        <div class="category-column">
+          <div class="category-section">
+            <button
+              class="category-button"
+              [ngClass]="{
+                filled: isAllProfessionalSelected(),
+                outlined: !isAllProfessionalSelected()
+              }"
+              (click)="toggleProfessional()"
+            >
+              Professional
+            </button>
+            <div class="category-content">
+              <div class="category-item">
+                <input
+                  type="checkbox"
+                  id="colleagues"
+                  name="colleagues"
+                  [(ngModel)]="professional.colleagues"
+                />
+                <label for="colleagues">Colleagues</label>
+              </div>
+              <div class="category-item">
+                <input
+                  type="checkbox"
+                  id="clients"
+                  name="clients"
+                  [(ngModel)]="professional.clients"
+                />
+                <label for="clients">Clients</label>
+              </div>
+              <div class="category-item">
+                <input
+                  type="checkbox"
+                  id="businessPartners"
+                  name="businessPartners"
+                  [(ngModel)]="professional.businessPartners"
+                />
+                <label for="businessPartners">Business Partners</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Others Category -->
+        <div class="category-column">
+          <div class="category-section">
+            <button
+              class="category-button"
+              [ngClass]="{
+                filled: isAllOthersSelected(),
+                outlined: !isAllOthersSelected()
+              }"
+              (click)="toggleOthers()"
+            >
+              Others
+            </button>
+            <div class="category-content">
+              <div class="category-item">
+                <input
+                  type="checkbox"
+                  id="acquaintancesOthers"
+                  name="acquaintancesOthers"
+                  [(ngModel)]="others.acquaintances"
+                />
+                <label for="acquaintancesOthers">Acquaintances</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Birthday Range -->
+        <div class="birthday-column">
+          <div class="birthday-range-section">
+            <div class="birthday-range">
+              <label for="birthdayRange">Birthday Range:</label>
+              <input
+                type="date"
+                id="birthdayStart"
+                name="birthdayStart"
+                [(ngModel)]="startDate"
+                (change)="onBirthdayRangeChange()"
+              />
+              <input
+                type="date"
+                id="birthdayEnd"
+                name="birthdayEnd"
+                [(ngModel)]="endDate"
+                (change)="onBirthdayRangeChange()"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

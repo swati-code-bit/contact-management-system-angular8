@@ -1,0 +1,55 @@
+<div class="search-container">
+    <ng-container *ngIf="searchType !== 'birthday'">
+      <input
+        type="text"
+        [(ngModel)]="searchInput"
+        placeholder="Search..."
+        class="search-input"
+      />
+    </ng-container>
+  
+    <ng-container *ngIf="searchType === 'birthday'">
+      <input
+        type="date"
+        [(ngModel)]="startDate"
+        placeholder="Start Date"
+        class="search-input"
+      />
+      <span>-</span>
+      <input
+        type="date"
+        [(ngModel)]="endDate"
+        placeholder="End Date"
+        class="search-input"
+      />
+    </ng-container>
+  
+    <select class="search-dropdown" [(ngModel)]="searchType">
+      <option value="name">Name</option>
+      <option value="email">Email</option>
+      <option value="phone">Phone No</option>
+      <option value="birthday">Birthday (Range)</option>
+      <option value="address">Address</option>
+    </select>
+  
+    <button type="button" (click)="search()" class="search-button">
+      <img
+        src="../../assets/images/search-icon.png"
+        alt="Search Icon"
+        class="search-icon"
+      />Search
+    </button>
+  
+    <button type="button" (click)="clearSearch()" class="clear-button">
+      Clear
+    </button>
+  </div>
+  
+  <div *ngIf="searchInput && !searchResultsUpdated">
+    <p>No results found for "{{ searchInput }}"</p>
+  </div>
+  
+  <div *ngIf="!searchResultsUpdated && !searchInput">
+    <p>No search results yet. Please start a search.</p>
+  </div>
+  

@@ -1,0 +1,97 @@
+<app-filter (filtersApplied)="applyFilters($event)"></app-filter>
+<app-search (searchResultsUpdated)="updateSearchResults($event)"></app-search>
+
+<div>
+  <!-- Check if no contacts are available -->
+  <div *ngIf="(contacts.length === 0 || filteredContacts.length === 0) && searchResults.length === 0">
+    No contacts available.
+  </div>
+
+  <!-- Contacts Table -->
+  <table class="contacts-table">
+    <thead>
+      <tr>
+        <th class="contacts-header">
+          Name
+          <button mat-mini-fab class="sort-btn" (click)="sortContacts('name', $event)">
+            <mat-icon *ngIf="sortDirection['name'] === undefined">sort</mat-icon>
+            <mat-icon *ngIf="sortDirection['name'] === 'asc'">arrow_upward</mat-icon>
+            <mat-icon *ngIf="sortDirection['name'] === 'desc'">arrow_downward</mat-icon>
+          </button>
+        </th>
+        <th class="contacts-header">
+          Phone Number
+          <button mat-mini-fab class="sort-btn" (click)="sortContacts('ph_no', $event)">
+            <mat-icon *ngIf="sortDirection['ph_no'] === undefined">sort</mat-icon>
+            <mat-icon *ngIf="sortDirection['ph_no'] === 'asc'">arrow_upward</mat-icon>
+            <mat-icon *ngIf="sortDirection['ph_no'] === 'desc'">arrow_downward</mat-icon>
+          </button>
+        </th>
+        <th class="contacts-header">
+          Email
+          <button mat-mini-fab class="sort-btn" (click)="sortContacts('email', $event)">
+            <mat-icon *ngIf="sortDirection['email'] === undefined">sort</mat-icon>
+            <mat-icon *ngIf="sortDirection['email'] === 'asc'">arrow_upward</mat-icon>
+            <mat-icon *ngIf="sortDirection['email'] === 'desc'">arrow_downward</mat-icon>
+          </button>
+        </th>
+        <th class="contacts-header">
+          Birthday
+          <button mat-mini-fab class="sort-btn" (click)="sortContacts('bday', $event)">
+            <mat-icon *ngIf="sortDirection['bday'] === undefined">sort</mat-icon>
+            <mat-icon *ngIf="sortDirection['bday'] === 'asc'">arrow_upward</mat-icon>
+            <mat-icon *ngIf="sortDirection['bday'] === 'desc'">arrow_downward</mat-icon>
+          </button>
+        </th>
+        <th class="contacts-header">
+          Address
+          <button mat-mini-fab class="sort-btn" (click)="sortContacts('address', $event)">
+            <mat-icon *ngIf="sortDirection['address'] === undefined">sort</mat-icon>
+            <mat-icon *ngIf="sortDirection['address'] === 'asc'">arrow_upward</mat-icon>
+            <mat-icon *ngIf="sortDirection['address'] === 'desc'">arrow_downward</mat-icon>
+          </button>
+        </th>
+        <th class="contacts-header">
+          Category
+          <button mat-mini-fab class="sort-btn" (click)="sortContacts('category', $event)">
+            <mat-icon *ngIf="sortDirection['category'] === undefined">sort</mat-icon>
+            <mat-icon *ngIf="sortDirection['category'] === 'asc'">arrow_upward</mat-icon>
+            <mat-icon *ngIf="sortDirection['category'] === 'desc'">arrow_downward</mat-icon>
+          </button>
+        </th>
+        <th class="contacts-header">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let contact of getPaginatedContacts()" class="contact-row">
+        <td class="contact-cell">{{ contact.name }}</td>
+        <td class="contact-cell">{{ contact.ph_no }}</td>
+        <td class="contact-cell">{{ contact.email }}</td>
+        <td class="contact-cell">{{ contact.bday }}</td>
+        <td class="contact-cell">{{ contact.address }}</td>
+        <td class="contact-cell">
+          <div>
+            {{ contact.category.mainCategory }}
+            <div class="subcategory">{{ contact.category.subcategory }}</div>
+          </div>
+        </td>
+        <td class="contact-cell">
+          <button mat-mini-fab class="edit-btn" [routerLink]="['/edit-contact', contact._id]">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-mini-fab class="delete-btn" (click)="deleteContact(contact._id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Material Paginator -->
+  <mat-paginator
+    [length]="filteredContacts.length"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    [pageIndex]="pageIndex"
+    (page)="applyPagination($event)"
+  ></mat-paginator>
+</div>

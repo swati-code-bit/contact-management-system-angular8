@@ -1,0 +1,38 @@
+<h2 id="signup-title" class="signup-title">Signup</h2>
+<form (ngSubmit)="signup($event)" id="signup-form" class="signup-form">
+  <label for="username" id="username-label" class="signup-label"
+    >Username</label
+  >
+  <input
+    type="text"
+    [(ngModel)]="username"
+    name="username"
+    id="username"
+    class="signup-input"
+    required
+  />
+
+  <label for="email" id="email-label" class="signup-label">Email</label>
+  <input
+    type="email"
+    [(ngModel)]="email"
+    name="email"
+    id="email"
+    class="signup-input"
+    required
+  />
+
+  <label for="password" id="password-label" class="signup-label"
+    >Password</label
+  >
+  <input
+    type="password"
+    [(ngModel)]="password"
+    name="password"
+    id="password"
+    class="signup-input"
+    required
+  />
+
+  <button type="submit" id="signup-button" class="signup-button">Signup</button>
+</form>

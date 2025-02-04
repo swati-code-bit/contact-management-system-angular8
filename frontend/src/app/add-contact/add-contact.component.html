@@ -1,0 +1,165 @@
+<div class="add-contact-container">
+  <h2>Add New Contact</h2>
+  <form (ngSubmit)="addContact()" #contactForm="ngForm">
+    <div>
+      <label for="name">Name:</label>
+      <input
+        type="text"
+        id="name"
+        [(ngModel)]="newContact.name"
+        name="name"
+        required
+      />
+      <div *ngIf="contactForm.submitted && !newContact.name" class="error">
+        Name is required.
+      </div>
+    </div>
+
+    <div>
+      <label for="ph_no">Phone Number:</label>
+      <input
+        type="text"
+        id="ph_no"
+        [(ngModel)]="newContact.ph_no"
+        name="ph_no"
+        [pattern]="phoneRegex"
+        required
+      />
+      <div *ngIf="contactForm.submitted && !newContact.ph_no" class="error">
+        Phone number is required.
+      </div>
+      <div
+        *ngIf="
+          contactForm.submitted &&
+          newContact.ph_no &&
+          !newContact.ph_no.match(phoneRegex)
+        "
+        class="error"
+      >
+        Phone number must be 10 digits.
+      </div>
+    </div>
+
+    <div>
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        [(ngModel)]="newContact.email"
+        name="email"
+        required
+      />
+      <div *ngIf="contactForm.submitted && !newContact.email" class="error">
+        Email is required.
+      </div>
+      <div
+        *ngIf="
+          contactForm.submitted &&
+          newContact.email &&
+          !newContact.email.match(emailRegex)
+        "
+        class="error"
+      >
+        Invalid email format.
+      </div>
+    </div>
+
+    <div>
+      <label for="profile_pic">Profile Picture (URL or File):</label>
+      <input
+        type="text"
+        id="profile_pic"
+        [(ngModel)]="newContact.profile_pic"
+        name="profile_pic"
+      />
+      <small>Provide a URL or file path for the profile picture</small>
+    </div>
+
+    <div>
+      <label for="bday">Birthday:</label>
+      <input
+        type="date"
+        id="bday"
+        [(ngModel)]="selectedDate"
+        (change)="onDateChange($event)"
+        name="bday"
+        required
+      />
+      <div *ngIf="contactForm.submitted && !newContact.bday" class="error">
+        Birthday is required.
+      </div>
+    </div>
+
+    <div>
+      <label for="address">Address:</label>
+      <textarea
+        id="address"
+        [(ngModel)]="newContact.address"
+        name="address"
+        required
+      ></textarea>
+      <div *ngIf="contactForm.submitted && !newContact.address" class="error">
+        Address is required.
+      </div>
+    </div>
+
+    <div>
+      <label for="category">Category:</label>
+      <select
+        id="category"
+        [(ngModel)]="newContact.category.mainCategory"
+        name="category"
+        (change)="onCategoryChange()"
+        required
+      >
+        <option value="Personal">Personal</option>
+        <option value="Professional">Professional</option>
+        <option value="Others">Others</option>
+      </select>
+    </div>
+
+    <div *ngIf="newContact.category.mainCategory === 'Personal'">
+      <label for="subcategory">Subcategory:</label>
+      <select
+        id="subcategory"
+        [(ngModel)]="newContact.category.subcategory"
+        name="subcategory"
+        required
+      >
+        <option value="Family">Family</option>
+        <option value="Friends">Friends</option>
+      </select>
+    </div>
+
+    <div *ngIf="newContact.category.mainCategory === 'Professional'">
+      <label for="subcategory">Subcategory:</label>
+      <select
+        id="subcategory"
+        [(ngModel)]="newContact.category.subcategory"
+        name="subcategory"
+        required
+      >
+        <option value="Colleagues">Colleagues</option>
+        <option value="Clients">Clients</option>
+        <option value="Business Partners">Business Partners</option>
+      </select>
+    </div>
+
+    <div *ngIf="newContact.category.mainCategory === 'Others'">
+      <label for="subcategory">Subcategory:</label>
+      <select
+        id="subcategory"
+        [(ngModel)]="newContact.category.subcategory"
+        name="subcategory"
+        required
+      >
+        <option value="Acquaintances">Acquaintances</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="!contactForm.valid">Submit</button>
+      <button type="button" (click)="cancelAdd()">Cancel</button>
+    </div>
+  </form>
+</div>

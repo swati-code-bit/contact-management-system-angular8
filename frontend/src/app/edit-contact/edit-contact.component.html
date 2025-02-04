@@ -1,0 +1,108 @@
+<div class="edit-contact-container">
+  <h2>Edit Contact</h2>
+  <div *ngIf="contact" class="edit-contact-form">
+    <form (ngSubmit)="saveContact()">
+      <div>
+        <label for="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          [(ngModel)]="contact.name"
+          name="name"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="ph_no">Phone Number:</label>
+        <input
+          type="text"
+          id="ph_no"
+          [(ngModel)]="contact.ph_no"
+          name="ph_no"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="contact.email"
+          name="email"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="profile_pic">Profile Picture (URL or File):</label>
+        <input
+          type="text"
+          id="profile_pic"
+          [(ngModel)]="contact.profile_pic"
+          name="profile_pic"
+        />
+        <small>Provide a URL or file path for the profile picture</small>
+      </div>
+
+      <div>
+        <label for="bday">Birthday:</label>
+        <input
+          type="date"
+          [(ngModel)]="contact.bday"
+          name="bday"
+          [value]="contact.bday"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="address">Address:</label>
+        <textarea
+          id="address"
+          [(ngModel)]="contact.address"
+          name="address"
+          required
+        ></textarea>
+      </div>
+
+      <div>
+        <label for="mainCategory">Main Category:</label>
+        <select
+          id="mainCategory"
+          [(ngModel)]="contact.category.mainCategory"
+          name="mainCategory"
+          required
+          (change)="onMainCategoryChange()"
+        >
+          <option value="Personal">Personal</option>
+          <option value="Professional">Professional</option>
+          <option value="Others">Others</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="subcategory">Subcategory:</label>
+        <select
+          id="subcategory"
+          [(ngModel)]="contact.category.subcategory"
+          name="subcategory"
+          required
+        >
+          <option
+            *ngFor="let subcategory of subcategoryOptions"
+            [value]="subcategory"
+          >
+            {{ subcategory }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit">Update Contact</button>
+        <button type="button" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

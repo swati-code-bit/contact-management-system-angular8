@@ -1,0 +1,89 @@
+.contacts-toolbar {
+    font-size: large;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: 15px;  /* Apply border radius to top-left corner */
+    border-top-right-radius: 15px; /* Apply border radius to top-right corner */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+
+.contacts-toolbar h2 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: #343a40;
+}
+
+.toolbar-actions {
+    display: flex;
+    align-items: center;
+}
+
+.toolbar-actions select,
+.toolbar-actions label,
+.toolbar-actions button {
+    margin-left: 15px;
+    
+}
+
+.toolbar-actions select {
+    padding: 5px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #495057;
+}
+
+.toolbar-actions label {
+    color: #495057;
+}
+
+.toolbar-actions button img {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+}
+
+.toolbar-actions button {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #226ab7;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.toolbar-actions button:hover {
+    background-color: #1a5a9b;
+    transform: scale(1.05);
+}
+
+.toolbar-actions button:active {
+    background-color: #154a7d;
+    transform: scale(1);
+}
+
+.toolbar-actions .contact-text {
+    margin-left: 15px;
+    font-size: 1.25rem;
+    color: #495057;
+}
+
+.toolbar-actions .filter-text {
+    margin-left: 15px;
+    font-size: 1.25rem;
+    color: #495057;
+}
+
+.toolbar-actions .entries-text {
+    margin-left: 15px;
+    font-size: 1.25rem;
+    color: #495057;
+}
