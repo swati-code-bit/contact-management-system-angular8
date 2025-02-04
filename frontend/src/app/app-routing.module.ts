@@ -8,15 +8,14 @@ import { AddContactComponent } from './add-contact/add-contact.component';
 import { ConfigComponent } from './config/config.component';
 
 const routes: Routes = [
-  { path: 'signin', component: SigninComponent },          // Route for sign-in
-  { path: 'register', component: SignupComponent },        // Route for register
-  {path:'config',component:ConfigComponent}   ,
-  { path: 'home', component: HomeComponent },              // Route for home
-  { path: '', redirectTo: '/signin', pathMatch: 'full' },  // Redirect root to '/signin'
-  { path: 'edit-contact/:id', component: EditContactComponent }, // Route for editing contact
-  { path: 'add-contact', component: AddContactComponent }, // Route for adding contact
-  { path: '**', redirectTo: '/signin' } 
-                 
+  { path: 'signin', component: SigninComponent },
+  { path: 'register', component: SignupComponent },
+  { path: 'config', component: ConfigComponent },
+  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/signin', pathMatch: 'full' },
+  { path: 'edit-contact/:id', component: EditContactComponent },
+  { path: 'add-contact', component: AddContactComponent },
+  { path: '**', redirectTo: '/signin' }
 ];
 
 @NgModule({

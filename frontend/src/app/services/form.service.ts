@@ -14,7 +14,6 @@ interface FormData {
 })
 export class FormService {
   private apiUrl = "http://localhost:5000/api/forms";
-  
 
   constructor(private http: HttpClient) {}
 
@@ -27,6 +26,6 @@ export class FormService {
   }
 
   getFormSchemaById(formId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${formId}`);  // Use form ID in the URL
+    return this.http.get(`${this.apiUrl}/${formId}`);
   }
 }

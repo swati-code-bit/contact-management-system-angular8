@@ -1,18 +1,15 @@
 <nav class="navbar">
-  <!-- Navbar before login -->
   <div *ngIf="!isLoggedIn; else loggedInTemplate" class="navbar-content">
     <div class="navbar-left">
       <img src="../../assets/images/logo.jpg" alt="Logo" class="logo" />
       <h1>ContactVault</h1>
     </div>
     <div class="navbar-right">
-      <!-- Show Register button or Sign In button based on flags -->
       <button *ngIf="isRegisterForm" (click)="navigateToSignIn()">Sign In</button>
       <button *ngIf="isSignInForm" (click)="navigateToRegister()">Register</button>
     </div>
   </div>
 
-  <!-- Navbar after login -->
   <ng-template #loggedInTemplate>
     <div class="navbar-content">
       <div class="navbar-left">
@@ -23,7 +20,6 @@
         <span>Welcome, {{ username }}!</span>
       </div>
       <div class="navbar-right">
-        <!-- Config button added -->
         <button (click)="navigateToConfig()">
           <mat-icon>settings</mat-icon> Config
         </button>

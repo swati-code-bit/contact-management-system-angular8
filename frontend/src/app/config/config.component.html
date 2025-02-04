@@ -1,4 +1,3 @@
-<!-- config.component.html -->
 <div class="container">
   <h2>Enter JSON Structure to Generate Form</h2>
 
@@ -11,14 +10,12 @@
   <br />
   <button (click)="generateForm()">Generate Form</button>
 
-  <!-- Form Preview -->
   <div *ngIf="formFields.length > 0">
     <h2>Form Preview</h2>
     <form [formGroup]="form" (ngSubmit)="submitContact()">
       <div *ngFor="let field of formFields" class="form-field">
         <label [for]="field.name">{{ field.label }}:</label>
 
-        <!-- Text, Email, Number, URL inputs -->
         <ng-container
           *ngIf="['text', 'email', 'number', 'url'].includes(field.type)"
         >
@@ -31,7 +28,6 @@
           />
         </ng-container>
 
-        <!-- Password input -->
         <ng-container *ngIf="field.type === 'password'">
           <input
             type="password"
@@ -42,7 +38,6 @@
           />
         </ng-container>
 
-        <!-- Checkbox -->
         <ng-container *ngIf="field.type === 'checkbox'">
           <input
             type="checkbox"
@@ -52,7 +47,6 @@
           />
         </ng-container>
 
-        <!-- Radio buttons -->
         <ng-container *ngIf="field.type === 'radio'">
           <div class="radio-group">
             <div *ngFor="let option of field.options" class="radio-option">
@@ -68,7 +62,6 @@
           </div>
         </ng-container>
 
-        <!-- Select dropdown -->
         <ng-container *ngIf="field.type === 'select'">
           <select
             [id]="field.name"
@@ -82,7 +75,6 @@
           </select>
         </ng-container>
 
-        <!-- Textarea -->
         <ng-container *ngIf="field.type === 'textarea'">
           <textarea
             [id]="field.name"
@@ -92,7 +84,6 @@
           ></textarea>
         </ng-container>
 
-        <!-- Error messages -->
         <div
           *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched"
           class="error-message"
@@ -101,7 +92,6 @@
         </div>
       </div>
 
-      <!-- Submit button -->
       <button type="submit">Submit</button>
     </form>
 
@@ -114,29 +104,18 @@
 </div>
 
 <label for="formSelect">Select Form:</label>
-<select
-  id="formSelect"
-  [(ngModel)]="selectedFormId"  
-  (change)="onFormSelectChange()"
->
-  <option *ngFor="let form of formNames" [value]="form._id"> 
+<select id="formSelect" [(ngModel)]="selectedFormId" (change)="onFormSelectChange()">
+  <option *ngFor="let form of formNames" [value]="form._id">
     {{ form.formName }}
   </option>
 </select>
 
 <button (click)="setForm()">Set Form</button>
 
-
-<!-- <h2>Available Forms</h2>
-<div *ngIf="formNames.length > 0">
-  <ul>
-    <li *ngFor="let formName of formNames">
-      {{ formName }}
-    </li>
-  </ul>
+<div *ngIf="selectedFormId">
+  <h3>Selected Form:</h3>
+  <p><strong>Form ID:</strong> {{ selectedFormId }}</p>
+  <p><strong>Form Name:</strong> {{ formName }}</p>
 </div>
 
-
-<div *ngIf="formNames.length === 0">
-  <p>No forms available.</p>
-</div> -->
+<button (click)="handleGeneratedForm()">Generate Selected Set Form</button>

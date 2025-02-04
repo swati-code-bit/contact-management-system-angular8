@@ -28,7 +28,6 @@ export class FilterComponent implements OnInit {
     console.log("Filters applied", filters);
   }
 
-  // Get the selected categories as an array
   getCategoryFilter() {
     const categories = [];
     if (this.personal.family || this.personal.friends) categories.push("Personal");
@@ -43,7 +42,6 @@ export class FilterComponent implements OnInit {
     return categories;
   }
 
-  // Clear all the filters
   clearFilters() {
     this.personal = { family: false, friends: false };
     this.professional = {
@@ -54,18 +52,16 @@ export class FilterComponent implements OnInit {
     this.others = { acquaintances: false };
     this.startDate = "";
     this.endDate = "";
-    this.applyFilters(); // Emit cleared filters
+    this.applyFilters();
     console.log("Filters cleared");
   }
 
-  // Toggle selection for personal categories
   togglePersonal() {
     const allSelected = this.isAllPersonalSelected();
     this.personal.family = !allSelected;
     this.personal.friends = !allSelected;
   }
 
-  // Toggle selection for professional categories
   toggleProfessional() {
     const allSelected = this.isAllProfessionalSelected();
     this.professional.colleagues = !allSelected;
@@ -73,18 +69,15 @@ export class FilterComponent implements OnInit {
     this.professional.businessPartners = !allSelected;
   }
 
-  // Toggle selection for others category
   toggleOthers() {
     const allSelected = this.isAllOthersSelected();
     this.others.acquaintances = !allSelected;
   }
 
-  // Check if all personal categories are selected
   isAllPersonalSelected() {
     return this.personal.family && this.personal.friends;
   }
 
-  // Check if all professional categories are selected
   isAllProfessionalSelected() {
     return (
       this.professional.colleagues &&
@@ -93,19 +86,11 @@ export class FilterComponent implements OnInit {
     );
   }
 
-  // Check if all other categories are selected
   isAllOthersSelected() {
     return this.others.acquaintances;
   }
 
-  // Validate and handle birthday range changes
   onBirthdayRangeChange() {
     console.log("Birthday range changed", this.startDate, this.endDate);
   }
-
-  // Convert date string to Date object for comparison
- 
-
-  // Ensure that the start and end dates are valid Date objects and apply the filters properly
- 
 }

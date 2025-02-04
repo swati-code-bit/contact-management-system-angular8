@@ -39,7 +39,7 @@ export class AddContactComponent implements OnInit {
 
   emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   phoneRegex = /^[0-9]{10}$/;
-  selectedDate: string = '';  // Add this line
+  selectedDate: string = '';  
 
   constructor(
     private router: Router,

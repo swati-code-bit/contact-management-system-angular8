@@ -35,6 +35,8 @@ export class ConfigComponent implements OnInit {
   formNames: any[] = [];  
   selectedFormId: string = ''; 
 
+  schema: any;
+
   constructor(private fb: FormBuilder, private formService: FormService) {
     this.form = this.fb.group({});
   }
@@ -58,17 +60,15 @@ export class ConfigComponent implements OnInit {
   }
 
   setForm(): void {
-    this.formService.getFormSchemaById(this.selectedFormId).subscribe((formData: any) => {
-      this.formFields = formData.schema.formFields;  // Update formFields with the selected form schema
-      this.createForm();  // Rebuild the form based on the new schema
-    });
-  }
-
-  fetchFormSchema(formName: string): void {
-    this.formService.getFormSchema(formName).subscribe((formData: any) => {
-      this.formFields = formData.schema.formFields;
-      this.createForm();
-    });
+    if (this.selectedFormId) {
+      const selectedForm = this.formNames.find(form => form._id === this.selectedFormId);
+  
+      if (selectedForm) {
+        this.formName = selectedForm.formName;
+      } else {
+        console.error('Selected form not found');
+      }
+    }
   }
 
   generateForm(): void {
@@ -83,6 +83,16 @@ export class ConfigComponent implements OnInit {
     } catch (e) {
       alert("Invalid JSON format!");
       console.error("JSON parse error:", e);
+    }
+  }
+
+  handleGeneratedForm(): void {
+    if (this.form.valid) {
+      console.log("Form is valid and ready to be submitted or saved");
+      console.log("Form Schema:", this.schema);
+      this.submitContact();
+    } else {
+      console.log("Form is not valid. Please check the inputs.");
     }
   }
 
@@ -123,13 +133,11 @@ export class ConfigComponent implements OnInit {
     this.form = this.fb.group(group);
   }
 
-  // Helper method to check if a field has errors
   hasError(fieldName: string, errorType: string): boolean {
     const control = this.form.get(fieldName);
     return control ? control.hasError(errorType) && control.touched : false;
   }
 
-  // Helper method to get error message
   getErrorMessage(fieldName: string): string {
     const control = this.form.get(fieldName);
     if (!control || !control.errors) return "";
@@ -163,7 +171,6 @@ export class ConfigComponent implements OnInit {
       },
     };
 
-    // Use the service to save the form data
     this.formService.saveForm(formData).subscribe(
       (response) => {
         alert("Form saved successfully!");

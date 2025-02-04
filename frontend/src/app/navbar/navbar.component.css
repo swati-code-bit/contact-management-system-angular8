@@ -10,7 +10,6 @@
   width: 100%;
 }
 
-/* Center the content of the navbar */
 .navbar-content {
   display: flex;
   justify-content: space-between;
@@ -18,7 +17,6 @@
   width: 100%;
 }
 
-/* Align elements in the left side of the navbar */
 .navbar-left {
   display: flex;
   align-items: center;
@@ -39,15 +37,13 @@
   font-weight: 400;
 }
 
-/* Centered greeting section after login */
 .navbar-center {
-  font-size:x-large;
+  font-size: x-large;
   text-align: center;
   flex-grow: 1;
-  font-weight:normal;
+  font-weight: normal;
 }
 
-/* Align elements in the right side of the navbar */
 .navbar-right {
   display: flex;
   align-items: center;

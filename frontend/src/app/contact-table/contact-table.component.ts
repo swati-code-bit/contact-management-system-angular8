@@ -15,7 +15,7 @@ export class ContactTableComponent implements OnInit, OnDestroy {
   filteredContacts: any[] = [];
   private contactsUpdatedSubscription: Subscription | null = null;
   private filterSubscription: Subscription | null = null;
-  sortDirection: { [key: string]: 'asc' | 'desc' | undefined } = {}; // track sort direction per column
+  sortDirection: { [key: string]: 'asc' | 'desc' | undefined } = {};
   currentFilters: any = {
     categories: [],
     startDate: '',
@@ -43,7 +43,7 @@ export class ContactTableComponent implements OnInit, OnDestroy {
     this.filterSubscription = this.contactService.filterUpdated$.subscribe(
       (filters) => {
         this.currentFilters = filters;
-        this.applyFilters(this.currentFilters); // Reapply filters when they are updated
+        this.applyFilters(this.currentFilters);
       }
     );
   }
@@ -62,8 +62,8 @@ export class ContactTableComponent implements OnInit, OnDestroy {
       (data) => {
         this.contacts = data;
         this.searchResults = [...this.contacts];
-        this.applyFilters(this.currentFilters); // Apply filters when data is fetched
-        this.applySorting();  // Reapply sorting after fetching data
+        this.applyFilters(this.currentFilters);
+        this.applySorting();
       },
       (error) => {
         console.error('Error fetching contacts:', error);
@@ -78,17 +78,14 @@ export class ContactTableComponent implements OnInit, OnDestroy {
     if (confirmation) {
       this.contactService.deleteContact(contactId).subscribe(
         () => {
-          // Update local data after deletion
           this.contacts = this.contacts.filter(
             (contact) => contact._id !== contactId
           );
           this.searchResults = this.searchResults.filter(
             (contact) => contact._id !== contactId
           );
-
-          // Reapply sorting and filters after deletion
           this.applyFilters(this.currentFilters);
-          this.applySorting();  // Ensure sorting is reapplied
+          this.applySorting();
         },
         (error) => {
           console.error('Error deleting contact:', error);
@@ -98,23 +95,21 @@ export class ContactTableComponent implements OnInit, OnDestroy {
   }
 
   editContact(contactId: string): void {
-    this.fetchContacts(); // Re-fetch contacts after edit
+    this.fetchContacts();
     this.applySorting();
-    this.applyFilters(this.currentFilters); // Ensure filters are reapplied after editing
+    this.applyFilters(this.currentFilters);
   }
 
   sortContacts(column: string, event: Event): void {
     event.preventDefault();
     const currentDirection = this.sortDirection[column];
 
-    // Clear the sorting state for all other columns
     Object.keys(this.sortDirection).forEach((key) => {
       if (key !== column) {
         this.sortDirection[key] = undefined;
       }
     });
 
-    // Toggle sorting direction (ascending, descending, or undefined)
     if (currentDirection === 'asc') {
       this.sortDirection[column] = 'desc';
     } else if (currentDirection === 'desc') {
@@ -128,7 +123,7 @@ export class ContactTableComponent implements OnInit, OnDestroy {
 
   applySorting(): void {
     if (Object.values(this.sortDirection).every((value) => value === undefined)) {
-      this.filteredContacts = [...this.searchResults]; // Reset to default order
+      this.filteredContacts = [...this.searchResults];
     } else {
       this.filteredContacts = this.filteredContacts.sort((a, b) => {
         if (this.sortDirection['category']) {
@@ -166,21 +161,19 @@ export class ContactTableComponent implements OnInit, OnDestroy {
 
   updateSearchResults(results: any[]): void {
     this.searchResults = results;
-    this.applyFilters(this.currentFilters); // Apply filters when search results change
+    this.applyFilters(this.currentFilters);
     this.applySorting();
   }
 
   applyFilters(filters: any): void {
     let filtered = [...this.searchResults];
 
-    // Apply category filters
     if (filters.categories.length > 0) {
       filtered = filtered.filter(contact =>
         filters.categories.includes(contact.category.mainCategory)
       );
     }
 
-    // Apply birthday range filters
     if (filters.startDate || filters.endDate) {
       filtered = filtered.filter(contact => this.isBirthdayInRange(contact.birthday, filters.startDate, filters.endDate));
     }
@@ -198,12 +191,10 @@ export class ContactTableComponent implements OnInit, OnDestroy {
     const end = this.convertToDate(endDate);
     const contactDate = new Date(contactBirthday);
 
-    // Check if start date is set and contact date is earlier than start
     if (start && contactDate < start) {
       return false;
     }
 
-    // Check if end date is set and contact date is later than end
     if (end && contactDate > end) {
       return false;
     }
@@ -224,7 +215,7 @@ export class ContactTableComponent implements OnInit, OnDestroy {
 
   updatePaginator(): void {
     if (this.paginator) {
-      this.paginator.pageIndex = 0; // Reset to the first page when applying filters
+      this.paginator.pageIndex = 0;
     }
   }
 

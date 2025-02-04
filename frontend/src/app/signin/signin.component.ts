@@ -1,7 +1,6 @@
-// signin.component.ts
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service'; // Import AuthService
-import { Router } from '@angular/router'; // Import Router for navigation
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signin',
@@ -17,12 +16,8 @@ export class SigninComponent implements OnInit {
   ngOnInit() {}
 
   signin(event: Event) {
-    event.preventDefault(); // Prevent form submission and page reload
+    event.preventDefault();
   
-    console.log('Email:', this.email);  // Log the email
-    console.log('Password:', this.password);  // Log the password
-  
-    // Call AuthService signin method
     this.authService.signin({ email: this.email, password: this.password }).subscribe(
       (response) => {
         if (response && response.username) {
@@ -42,5 +37,4 @@ export class SigninComponent implements OnInit {
       }
     );
   }
-  
 }

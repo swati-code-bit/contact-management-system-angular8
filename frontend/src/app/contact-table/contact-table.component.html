@@ -2,12 +2,10 @@
 <app-search (searchResultsUpdated)="updateSearchResults($event)"></app-search>
 
 <div>
-  <!-- Check if no contacts are available -->
   <div *ngIf="(contacts.length === 0 || filteredContacts.length === 0) && searchResults.length === 0">
     No contacts available.
   </div>
 
-  <!-- Contacts Table -->
   <table class="contacts-table">
     <thead>
       <tr>
@@ -87,7 +85,6 @@
     </tbody>
   </table>
 
-  <!-- Material Paginator -->
   <mat-paginator
     [length]="filteredContacts.length"
     [pageSizeOptions]="[5, 10, 25, 100]"

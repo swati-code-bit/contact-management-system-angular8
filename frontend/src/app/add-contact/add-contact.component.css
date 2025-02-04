@@ -2,11 +2,11 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;  /* Light grey background */
-  border: 1px solid #ddd;     /* Grey border around the form */
-  border-radius: 8px;         /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Light shadow */
-  font-size: 1rem;  /* Global font size */
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
 }
 
 .form-group {
@@ -17,7 +17,7 @@ label {
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-  font-size: 1.5rem;  /* Larger font size for labels */
+  font-size: 1.5rem;
 }
 
 input[type="text"],
@@ -26,21 +26,21 @@ input[type="date"],
 select,
 textarea {
   width: 100%;
-  padding: 14px 18px;  /* More padding for better spacing */
-  border: 1px solid #ccc;  /* Light grey border */
-  border-radius: 4px;  /* Rounded corners */
+  padding: 14px 18px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   box-sizing: border-box;
-  background-color: #fff;  /* White background */
-  font-size: 1.1rem;  /* Slightly larger font size for inputs */
-  transition: all 0.3s ease-in-out;  /* Smooth transition for focus effect */
+  background-color: #fff;
+  font-size: 1.1rem;
+  transition: all 0.3s ease-in-out;
 }
 
 input[type="text"]::placeholder,
 input[type="email"]::placeholder,
 input[type="date"]::placeholder,
 textarea::placeholder {
-  font-size: 1rem;  /* Larger font size for placeholders */
-  color: #6c757d;   /* Lighter color for placeholders */
+  font-size: 1rem;
+  color: #6c757d;
 }
 
 input[type="text"]:focus,
@@ -48,24 +48,24 @@ input[type="email"]:focus,
 input[type="date"]:focus,
 select:focus,
 textarea:focus {
-  border-color: #007bff;  /* Blue border on focus */
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);  /* Blue glow on focus */
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
 }
 
 textarea {
-  height: 120px;  /* Larger height for textareas */
+  height: 120px;
   resize: vertical;
 }
 
 .error {
   color: #dc3545;
-  font-size: 1rem;  /* Larger error message font */
+  font-size: 1rem;
   margin-top: 5px;
 }
 
 .form-text {
   color: #6c757d;
-  font-size: 1rem;  /* Larger helper text font */
+  font-size: 1rem;
   margin-top: 5px;
   display: block;
 }
@@ -77,12 +77,12 @@ textarea {
 }
 
 button {
-  padding: 12px 24px;  /* Larger padding for buttons */
+  padding: 12px 24px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
-  font-size: 1.1rem;  /* Larger font size for buttons */
+  font-size: 1.1rem;
   transition: background-color 0.3s;
 }
 

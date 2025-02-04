@@ -23,7 +23,7 @@ export class SearchComponent implements OnInit {
       if (this.startDate && this.endDate) {
         this.contactService.searchContactsByBirthdayRange(this.startDate, this.endDate).subscribe(
           (results) => {
-            this.searchResultsUpdated.emit(results); // Emit search results to parent
+            this.searchResultsUpdated.emit(results);
           },
           (error) => {
             console.error('Error fetching contacts by birthday range:', error);
@@ -35,7 +35,7 @@ export class SearchComponent implements OnInit {
     } else {
       this.contactService.searchContactsLike(this.searchInput, this.searchType).subscribe(
         (results) => {
-          this.searchResultsUpdated.emit(results); // Emit search results to parent
+          this.searchResultsUpdated.emit(results);
         },
         (error) => {
           console.error('Error fetching contacts for like-search:', error);
@@ -49,6 +49,6 @@ export class SearchComponent implements OnInit {
     this.startDate = '';
     this.endDate = '';
     this.searchType = 'name';
-    this.searchResultsUpdated.emit([]); // Clear search results
+    this.searchResultsUpdated.emit([]);
   }
 }

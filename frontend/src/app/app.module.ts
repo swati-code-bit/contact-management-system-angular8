@@ -7,8 +7,6 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { ReactiveFormsModule } from '@angular/forms';
 
-
-
 import { MatButtonModule } from "@angular/material/button";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -33,7 +31,7 @@ import { ContactsToolbarComponent } from "./contacts-toolbar/contacts-toolbar.co
 import { EditContactComponent } from "./edit-contact/edit-contact.component";
 import { SearchComponent } from "./search/search.component";
 import { ConfigComponent } from './config/config.component';
-
+import { FormGeneratorComponent } from './form-generator/form-generator.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +46,8 @@ import { ConfigComponent } from './config/config.component';
     ContactsToolbarComponent,
     EditContactComponent,
     SearchComponent,
-    ConfigComponent
+    ConfigComponent,
+    FormGeneratorComponent
   ],
   imports: [
     BrowserModule,
@@ -58,9 +57,6 @@ import { ConfigComponent } from './config/config.component';
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
-
-
-    // Angular Material Modules
     MatButtonModule,
     MatDatepickerModule,
     MatFormFieldModule,
@@ -72,7 +68,6 @@ import { ConfigComponent } from './config/config.component';
     MatExpansionModule,
     MatDialogModule,
     MatButtonModule
-    
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

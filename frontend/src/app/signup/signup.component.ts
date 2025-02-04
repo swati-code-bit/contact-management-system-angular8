@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service'; // Import AuthService
-import { Router } from '@angular/router'; // Import Router for navigation
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -17,31 +17,20 @@ export class SignupComponent implements OnInit {
   ngOnInit() {}
 
   signup(event: Event) {
-    event.preventDefault(); // Prevent form submission and page reload
+    event.preventDefault();
 
-    // Call AuthService signup method
     this.authService.signup({ username: this.username, email: this.email, password: this.password }).subscribe(
       (response) => {
-        // Log the response to see its structure
-        console.log('Signup response:', response);
-
         if (response && response.username) {
-          // Store the username in localStorage after successful signup
           this.authService.setUsername(response.username);
-
-          // Show an alert upon successful signup
           alert('Signup successful! Welcome ' + response.username);
-
-          // Redirect to signin page after successful signup
           this.router.navigate(['/signin']);
         } else {
-          // Handle failed signup (e.g., display error message)
           console.error('Signup failed');
           alert('Signup failed. Please try again.');
         }
       },
       (error) => {
-        // Handle error (e.g., show an error message)
         console.error('Error during signup:', error);
         alert('Error during signup. Please try again later.');
       }

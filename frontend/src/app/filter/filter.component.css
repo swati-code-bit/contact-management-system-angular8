@@ -1,4 +1,3 @@
-/* Ensure filter container and filter header styling is applied */
 .filter-container {
   padding: 0px;
   max-width: 1200px;
@@ -25,7 +24,7 @@
 .filter-actions {
   display: flex;
   gap: 10px;
-  margin-top: 20px; /* Add margin-top to create space above the buttons */
+  margin-top: 20px;
 }
 
 .filter-action-button {
@@ -56,12 +55,11 @@
   background-color: #f1f1f1;
 }
 
-/* Equal height containers with flexbox */
 .category-row {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  align-items: stretch; /* Ensure all columns are of equal height */
+  align-items: stretch;
 }
 
 .category-column,
@@ -69,7 +67,7 @@
   flex: 1;
   min-width: 250px;
   display: flex;
-  flex-direction: column; /* Ensure content grows vertically */
+  flex-direction: column;
 }
 
 .category-section,
@@ -78,7 +76,7 @@
   padding: 15px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  flex: 1; /* Ensures the section grows to fill the space */
+  flex: 1;
 }
 
 .category-button,
@@ -127,7 +125,6 @@
   margin-right: 8px;
 }
 
-/* Consistent styling for birthday range section */
 .birthday-range-section {
   flex: 1;
 }
@@ -154,63 +151,55 @@
 }
 
 .birthday-range input::-webkit-datetime-edit {
-  color: black; /* Black text color for date input */
+  color: black;
 }
 
-/* For Mozilla Firefox */
 .birthday-range input::-moz-placeholder {
-  color: black; /* Placeholder text color for Firefox */
+  color: black;
 }
 
-/* For other browsers (generic placeholder styling) */
 .birthday-range input::placeholder {
-  color: black; /* Placeholder text color */
+  color: black;
 }
 
-/* Styling for the mat-expansion-panel */
 mat-expansion-panel {
   margin-top: 1%;
-  background-color: #f8f9fa; /* Light grey background */
-  border-radius: 15px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Elevated shadow */
-  border: none; /* Remove default border */
-  transition: box-shadow 0.3s ease; /* Smooth transition for the shadow */
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  transition: box-shadow 0.3s ease;
 }
 
-/* Ensure the header always has the background color #226ab7 */
 mat-expansion-panel-header {
-  background-color: #226ab7 !important; /* Always apply this background color */
-  color: #ffffff; /* White text */
-  border-radius: 15px 15px 0 0; /* Rounded top corners */
+  background-color: #226ab7 !important;
+  color: #ffffff;
+  border-radius: 15px 15px 0 0;
 }
 
-/* Title and description styling inside the header */
 mat-expansion-panel-header .mat-panel-title {
   font-size: 1.25rem;
-  color: white; /* Ensure the title is white */
+  color: white;
 }
 
 mat-expansion-panel-header .mat-panel-description {
   font-size: 0.875rem;
-  color: white; /* Ensure the description text is white */
+  color: white;
 }
 
-/* Body styling */
 mat-expansion-panel .mat-expansion-panel-body {
   padding: 20px;
 }
 
 mat-expansion-panel-body {
-  background-color: #ffffff; /* Body background */
-  border-radius: 0 0 15px 15px; /* Rounded bottom corners */
+  background-color: #ffffff;
+  border-radius: 0 0 15px 15px;
 }
 
-/* Expanded state specific styles */
 mat-expansion-panel.mat-expanded {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Larger shadow when expanded */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Ensure the collapsed state still has a shadow */
 mat-expansion-panel:not(.mat-expanded) {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Regular shadow for collapsed state */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

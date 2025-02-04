@@ -6,11 +6,10 @@
     padding: 10px 20px;
     background-color: #f8f9fa;
     border-bottom: 1px solid #dee2e6;
-    border-top-left-radius: 15px;  /* Apply border radius to top-left corner */
-    border-top-right-radius: 15px; /* Apply border radius to top-right corner */
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
+}
 
 .contacts-toolbar h2 {
     margin: 0;
@@ -27,7 +26,6 @@
 .toolbar-actions label,
 .toolbar-actions button {
     margin-left: 15px;
-    
 }
 
 .toolbar-actions select {
