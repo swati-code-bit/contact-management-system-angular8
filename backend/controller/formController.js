@@ -35,7 +35,7 @@ exports.getFormSchemaById = async (req, res) => {
       return res.status(404).json({ message: 'Form not found' });
     }
 
-    res.status(200).json({ formName: form.formName, schema: form.schema });
+    res.json(form);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching form schema', error });
   }

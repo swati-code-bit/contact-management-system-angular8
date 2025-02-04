@@ -31,7 +31,6 @@ import { ContactsToolbarComponent } from "./contacts-toolbar/contacts-toolbar.co
 import { EditContactComponent } from "./edit-contact/edit-contact.component";
 import { SearchComponent } from "./search/search.component";
 import { ConfigComponent } from './config/config.component';
-import { FormGeneratorComponent } from './form-generator/form-generator.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +46,7 @@ import { FormGeneratorComponent } from './form-generator/form-generator.componen
     EditContactComponent,
     SearchComponent,
     ConfigComponent,
-    FormGeneratorComponent
+  
   ],
   imports: [
     BrowserModule,

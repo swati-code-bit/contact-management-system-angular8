@@ -32,10 +32,10 @@ export class ConfigComponent implements OnInit {
   form: FormGroup;
   formName: string = "";
   showPreview: boolean = false;
-  formNames: any[] = [];  
-  selectedFormId: string = ''; 
-
-  schema: any;
+  showPreviewForSelected: boolean = false;
+  formNames: any[] = [];
+  selectedFormId: string = '';
+  schema: any = {};
 
   constructor(private fb: FormBuilder, private formService: FormService) {
     this.form = this.fb.group({});
@@ -45,7 +45,7 @@ export class ConfigComponent implements OnInit {
     this.formService.getFormNames().subscribe(
       (response: any) => {
         console.log('API Response:', response);
-        this.formNames = response; 
+        this.formNames = response;
       },
       (error) => {
         console.error('Error fetching form names', error);
@@ -61,38 +61,17 @@ export class ConfigComponent implements OnInit {
 
   setForm(): void {
     if (this.selectedFormId) {
-      const selectedForm = this.formNames.find(form => form._id === this.selectedFormId);
-  
-      if (selectedForm) {
-        this.formName = selectedForm.formName;
-      } else {
-        console.error('Selected form not found');
-      }
-    }
-  }
-
-  generateForm(): void {
-    try {
-      const formStructure = JSON.parse(this.jsonInput);
-      if (formStructure && formStructure.formFields) {
-        this.formFields = formStructure.formFields;
-        this.createForm();
-      } else {
-        alert("Invalid JSON structure!");
-      }
-    } catch (e) {
-      alert("Invalid JSON format!");
-      console.error("JSON parse error:", e);
-    }
-  }
-
-  handleGeneratedForm(): void {
-    if (this.form.valid) {
-      console.log("Form is valid and ready to be submitted or saved");
-      console.log("Form Schema:", this.schema);
-      this.submitContact();
-    } else {
-      console.log("Form is not valid. Please check the inputs.");
+      this.formService.getFormById(this.selectedFormId).subscribe(
+        (response) => {
+          this.formName = response.formName;
+          this.formFields = response.schema.formFields;
+          this.createForm();
+          this.showPreviewForSelected = true;
+        },
+        (error) => {
+          console.error('Error fetching form data', error);
+        }
+      );
     }
   }
 
@@ -131,6 +110,38 @@ export class ConfigComponent implements OnInit {
     });
 
     this.form = this.fb.group(group);
+  }
+
+  generateForm(): void {
+    try {
+      const formStructure = JSON.parse(this.jsonInput);
+      if (formStructure && formStructure.formFields) {
+        this.formFields = formStructure.formFields;
+        this.createForm();
+        this.schema = formStructure;
+      } else {
+        alert("Invalid JSON structure!");
+      }
+    } catch (e) {
+      alert("Invalid JSON format!");
+      console.error("JSON parse error:", e);
+    }
+  }
+
+  handleGeneratedForm(): void {
+    if (this.form.valid) {
+      console.log("Form is valid and ready to be submitted or saved");
+      console.log("Form Schema:", this.schema);
+  
+      if (this.selectedFormId) {
+        console.log("Showing preview for selected form...");
+        this.showPreviewForSelected = true;
+      }
+  
+      this.submitContact();
+    } else {
+      console.log("Form is not valid. Please check the inputs.");
+    }
   }
 
   hasError(fieldName: string, errorType: string): boolean {
