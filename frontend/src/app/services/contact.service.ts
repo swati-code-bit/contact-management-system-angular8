@@ -59,11 +59,11 @@ export class ContactService {
   createContact(contact: any): Observable<any> {
     return this.http
       .post<any>(this.apiUrl, contact, { headers: this.getHeaders() })
-      .pipe(catchError(this.handleError));  // Handle any error from the API
+      .pipe(catchError(this.handleError)); 
   }
 
   updateContact(contactId: string, contactData: any): Observable<any> {
-    console.log('Sending contactData to backend:', contactData); // Log data
+    console.log('Sending contactData to backend:', contactData);
     return this.http
       .put<any>(`${this.apiUrl}/${contactId}`, contactData, {
         headers: this.getHeaders(),

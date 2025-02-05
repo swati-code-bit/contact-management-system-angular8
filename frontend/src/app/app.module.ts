@@ -31,6 +31,8 @@ import { ContactsToolbarComponent } from "./contacts-toolbar/contacts-toolbar.co
 import { EditContactComponent } from "./edit-contact/edit-contact.component";
 import { SearchComponent } from "./search/search.component";
 import { ConfigComponent } from "./config/config.component";
+import { AddContactDynamicComponent } from './add-contact-dynamic/add-contact-dynamic.component';
+import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import { ConfigComponent } from "./config/config.component";
     EditContactComponent,
     SearchComponent,
     ConfigComponent,
+    AddContactDynamicComponent,
+    DynamicFormComponent,
   ],
   imports: [
     BrowserModule,

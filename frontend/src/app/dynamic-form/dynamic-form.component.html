@@ -1,0 +1,98 @@
+<div *ngIf="formFields && formFields.length" class="dynamic-form-container">
+  <form [formGroup]="form">
+    <div *ngFor="let field of formFields" class="form-field">
+      <label [for]="field.name">{{ field.label }}:</label>
+
+      <ng-container *ngIf="['text', 'email', 'number', 'url', 'password', 'date', 'time', 'tel', 'search'].includes(field.type)">
+        <input
+          [type]="field.type"
+          [id]="field.name"
+          [formControlName]="field.name"
+          [placeholder]="field.placeholder || ''"
+          [required]="field.required"
+          [readonly]="previewMode"
+          class="form-control"
+        />
+      </ng-container>
+
+      <ng-container *ngIf="field.type === 'checkbox'">
+        <input
+          type="checkbox"
+          [id]="field.name"
+          [formControlName]="field.name"
+          [checked]="field.checked"
+          [disabled]="previewMode"
+          class="form-checkbox"
+        />
+        <span>{{ field.label }}</span>
+      </ng-container>
+
+      <ng-container *ngIf="field.type === 'radio'">
+        <div class="radio-group">
+          <div *ngFor="let option of field.options" class="radio-option">
+            <input
+              type="radio"
+              [id]="field.name + '_' + option"
+              [formControlName]="field.name"
+              [value]="option"
+              [disabled]="previewMode"
+              class="form-radio"
+            />
+            <label [for]="field.name + '_' + option">{{ option }}</label>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="field.type === 'select'">
+        <select
+          [id]="field.name"
+          [formControlName]="field.name"
+          [disabled]="previewMode"
+          class="form-select"
+        >
+          <option value="">Select an option</option>
+          <option *ngFor="let option of field.options" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+      </ng-container>
+
+      <ng-container *ngIf="field.type === 'textarea'">
+        <textarea
+          [id]="field.name"
+          [formControlName]="field.name"
+          [placeholder]="field.placeholder || ''"
+          [required]="field.required"
+          [readonly]="previewMode"
+          class="form-textarea"
+        ></textarea>
+      </ng-container>
+
+      <ng-container *ngIf="field.type === 'file'">
+        <input
+          type="file"
+          [id]="field.name"
+          [formControlName]="field.name"
+          [disabled]="previewMode"
+          class="form-file"
+        />
+      </ng-container>
+
+      <ng-container *ngIf="field.type === 'color'">
+        <input
+          type="color"
+          [id]="field.name"
+          [formControlName]="field.name"
+          class="form-color"
+        />
+      </ng-container>
+
+      <div
+        *ngIf="isFieldValid(field.name)"
+        class="error-message"
+      >
+        {{ getErrorMessage(field.name) }}
+      </div>
+    </div>
+  </form>
+</div>

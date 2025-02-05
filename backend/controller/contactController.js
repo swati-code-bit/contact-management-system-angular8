@@ -1,7 +1,12 @@
 const Contact = require("../models/contact");
-const { ObjectId } = require("mongodb");
+const { MongoClient, ObjectId } = require('mongodb');
 const moment = require("moment");
 const mongoose = require("mongoose");
+
+const uri = 'mongodb://localhost:27017';
+const dbName = 'trial_db';
+const collectionName = 'contacts';
+
 
 const generateUniqueContactId = async () => {
   const contactId = new ObjectId().toString();
@@ -24,72 +29,119 @@ const isValidDate = (dateStr) => {
   return date.isValid();
 };
 
-exports.createContact = async (req, res) => {
-  const {
-    name,
-    ph_no,
-    email,
-    profile_pic,
-    bday,
-    address,
-    category,
-    contactid,
-  } = req.body;
+// exports.createContact = async (req, res) => {
+//   const {
+//     name,
+//     ph_no,
+//     email,
+//     profile_pic,
+//     bday,
+//     address,
+//     category,
+//     contactid,
+//   } = req.body;
 
+//   try {
+//     if (!bday) {
+//       return res.status(400).json({
+//         message: "Birthday is required in DD-MM-YYYY format.",
+//       });
+//     }
+
+//     if (!isValidDate(bday)) {
+//       return res.status(400).json({
+//         message:
+//           "Invalid date format for birthday. Use DD-MM-YYYY format (e.g., 31-12-2023).",
+//       });
+//     }
+
+//     const randomContactId = Math.floor(Math.random() * 1000000000);
+
+//     if (!category || !category.mainCategory || !category.subcategory) {
+//       return res.status(400).json({
+//         message: "Both category and subcategory are required.",
+//       });
+//     }
+
+//     const contactId = contactid || randomContactId;
+
+//     const formattedBday = formatDateToDDMMYYYY(bday);
+
+//     if (!formattedBday) {
+//       return res.status(400).json({
+//         message: "Could not format the provided birthday correctly.",
+//       });
+//     }
+
+//     const contact = new Contact({
+//       name,
+//       ph_no,
+//       email,
+//       profile_pic,
+//       bday: formattedBday,
+//       address,
+//       category: {
+//         mainCategory: category.mainCategory,
+//         subcategory: category.subcategory,
+//       },
+//       contactid: contactId,
+//     });
+
+//     await contact.save();
+
+//     res.status(201).json(contact);
+//   } catch (error) {
+//     console.error("Error creating contact:", error);
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+exports.createContact = async (contactData) => {
   try {
-    if (!bday) {
-      return res.status(400).json({
-        message: "Birthday is required in DD-MM-YYYY format.",
-      });
+    if (!contactData.bday) {
+      throw new Error("Birthday is required in DD-MM-YYYY format.");
     }
 
-    if (!isValidDate(bday)) {
-      return res.status(400).json({
-        message:
-          "Invalid date format for birthday. Use DD-MM-YYYY format (e.g., 31-12-2023).",
-      });
+    if (!isValidDate(contactData.bday)) {
+      throw new Error("Invalid date format for birthday. Use DD-MM-YYYY format (e.g., 31-12-2023).");
     }
 
     const randomContactId = Math.floor(Math.random() * 1000000000);
 
-    if (!category || !category.mainCategory || !category.subcategory) {
-      return res.status(400).json({
-        message: "Both category and subcategory are required.",
-      });
+    if (!contactData.category || !contactData.category.mainCategory || !contactData.category.subcategory) {
+      throw new Error("Both category and subcategory are required.");
     }
 
-    const contactId = contactid || randomContactId;
-
-    const formattedBday = formatDateToDDMMYYYY(bday);
+    const contactId = contactData.contactid || randomContactId;
+    const formattedBday = formatDateToDDMMYYYY(contactData.bday);
 
     if (!formattedBday) {
-      return res.status(400).json({
-        message: "Could not format the provided birthday correctly.",
-      });
+      throw new Error("Could not format the provided birthday correctly.");
     }
 
-    const contact = new Contact({
-      name,
-      ph_no,
-      email,
-      profile_pic,
+    const client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const db = client.db(dbName);
+    const contactsCollection = db.collection(collectionName);
+
+    const contact = {
+      ...contactData,
       bday: formattedBday,
-      address,
-      category: {
-        mainCategory: category.mainCategory,
-        subcategory: category.subcategory,
-      },
       contactid: contactId,
-    });
+    };
 
-    await contact.save();
+    const result = await contactsCollection.insertOne(contact);
 
-    res.status(201).json(contact);
+    client.close();
+
+    return { message: 'Contact added successfully', contact: result.ops[0] };
   } catch (error) {
-    console.error("Error creating contact:", error);
-    res.status(500).json({ message: error.message });
+    console.error("Error creating contact:", error.message);
+    throw error;
   }
 };
+
+
+
 
 exports.getAllContacts = async (req, res) => {
   try {
@@ -159,25 +211,22 @@ exports.updateContact = async (req, res) => {
       return res.status(404).json({ message: "Contact not found" });
     }
 
-    // Validate the birthday date if provided
     if (bday && !isValidDate(bday)) {
       return res
         .status(400)
         .json({ message: "Invalid date format for birthday. Use DD-MM-YYYY." });
     }
 
-    // If bday is in the format "DD-MM-YYYY", convert it to a Date object
     if (bday) {
-      const formattedBday = moment(bday, "DD-MM-YYYY").toDate(); // Convert the date string to a Date object
+      const formattedBday = moment(bday, "DD-MM-YYYY").toDate(); 
       if (!formattedBday) {
         return res
           .status(400)
           .json({ message: "Invalid date format for birthday." });
       }
-      contact.bday = formattedBday; // Assign the formatted date to the contact
+      contact.bday = formattedBday; 
     }
 
-    // Update other contact fields
     if (name !== undefined) contact.name = name;
     if (ph_no !== undefined) contact.ph_no = ph_no;
     if (email !== undefined) contact.email = email;
@@ -197,7 +246,7 @@ exports.updateContact = async (req, res) => {
 
     res.status(200).json(contact);
   } catch (error) {
-    console.error("Error during update:", error); // Log the error to help with debugging
+    console.error("Error during update:", error);
     res.status(500).json({ message: error.message });
   }
 };

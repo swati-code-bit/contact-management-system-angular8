@@ -1,25 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { FormService } from "../services/form.service";
-
-interface FormField {
-  name: string;
-  label: string;
-  type: string;
-  placeholder?: string;
-  required?: boolean;
-  readonly?: boolean;
-  value?: any;
-  disabled?: boolean;
-  options?: string[];
-  checked?: boolean | string;
-  validations?: {
-    maxLength?: number;
-    minLength?: number;
-    pattern?: string;
-    email?: boolean;
-  };
-}
+import { FormField } from "../models/form-field.model";
 
 @Component({
   selector: "app-config",
@@ -27,62 +9,74 @@ interface FormField {
   styleUrls: ["./config.component.css"],
 })
 export class ConfigComponent implements OnInit {
-  jsonInput: string = "";
-  formFields: FormField[] = [];
-  form: FormGroup;
+  jsonFormInput: string = ""; 
+  jsonFormFields: FormField[] = [];
+  dropdownFormFields: FormField[] = [];
+  jsonForm: FormGroup; 
+  dropdownForm: FormGroup;
   formName: string = "";
-  showGeneratedPreview: boolean = false;  // Manage generated form preview
-  showSelectedPreview: boolean = false;   // Manage selected form preview
+  showJsonFormPreview: boolean = false;
+  showDropdownFormPreview: boolean = false;
   formNames: any[] = [];
-  selectedFormId: string = '';
-  schema: any = {};
+  selectedFormId: string = "";
+  formSchema: any = {};
 
-  constructor(private fb: FormBuilder, private formService: FormService) {
-    this.form = this.fb.group({});
+  constructor(
+    private fb: FormBuilder,
+    private formService: FormService
+  ) {
+    this.jsonForm = this.fb.group({});
+    this.dropdownForm = this.fb.group({});
   }
 
   ngOnInit(): void {
+    const storedFormId = localStorage.getItem("selectedFormId");
+    if (storedFormId) {
+      this.selectedFormId = storedFormId;
+      this.loadDropdownForm();
+    }
+
     this.formService.getFormNames().subscribe(
       (response: any) => {
-        console.log('API Response:', response);
         this.formNames = response;
       },
       (error) => {
-        console.error('Error fetching form names', error);
+        console.error("Error fetching form names", error);
       }
     );
   }
 
-  onFormSelectChange(): void {
+  onDropdownFormSelect(): void {
     if (this.selectedFormId) {
-      this.setForm();
+      this.loadDropdownForm();
     }
   }
 
-  setForm(): void {
+  loadDropdownForm(): void {
     if (this.selectedFormId) {
+      localStorage.setItem("selectedFormId", this.selectedFormId);
+
       this.formService.getFormById(this.selectedFormId).subscribe(
         (response) => {
           this.formName = response.formName;
-          this.formFields = response.schema.formFields;
-          this.createForm();
-          this.showSelectedPreview = true;  // Set the selected form preview visible
+          this.dropdownFormFields = response.schema.formFields;
+          this.showDropdownFormPreview = true;
+          console.log("Selected Form ID:", this.selectedFormId);
         },
         (error) => {
-          console.error('Error fetching form data', error);
+          console.error("Error fetching form data", error);
         }
       );
     }
   }
 
-  generateForm(): void {
+  generateJsonForm(): void {
     try {
-      const formStructure = JSON.parse(this.jsonInput);
+      const formStructure = JSON.parse(this.jsonFormInput);
       if (formStructure && formStructure.formFields) {
-        this.formFields = formStructure.formFields;
-        this.createForm();
-        this.schema = formStructure;
-        this.showGeneratedPreview = true;  // Show generated form preview
+        this.jsonFormFields = formStructure.formFields;
+        this.formSchema = formStructure;
+        this.showJsonFormPreview = true;
       } else {
         alert("Invalid JSON structure!");
       }
@@ -91,65 +85,8 @@ export class ConfigComponent implements OnInit {
       console.error("JSON parse error:", e);
     }
   }
-  
-  createForm(): void {
-    const group: { [key: string]: any } = {};
-  
-    this.formFields.forEach((field: FormField) => {
-      const validators = [];
-  
-      if (field.required) {
-        validators.push(Validators.required);
-      }
-  
-      if (field.validations) {
-        if (field.validations.maxLength) {
-          validators.push(Validators.maxLength(field.validations.maxLength));
-        }
-        if (field.validations.minLength) {
-          validators.push(Validators.minLength(field.validations.minLength));
-        }
-        if (field.validations.pattern) {
-          validators.push(Validators.pattern(field.validations.pattern));
-        }
-        if (field.validations.email) {
-          validators.push(Validators.email);
-        }
-      }
-  
-      group[field.name] = [
-        {
-          value: field.value || "",
-          disabled: field.disabled,
-        },
-        validators,
-      ];
-    });
-  
-    this.form = this.fb.group(group);
-  }
 
-  handleGeneratedForm(): void {
-    if (this.form.valid) {
-      console.log("Form is valid and ready to be submitted or saved");
-      console.log("Form Schema:", this.schema);
-  
-      if (this.selectedFormId) {
-        console.log("Showing preview for selected form...");
-        this.showSelectedPreview = true;
-      }
-  
-      this.submitContact();
-    } else {
-      console.log("Form is not valid. Please check the inputs.");
-    }
-  }
-
-  submitContact(): void {
-    alert("This is just a preview!");
-  }
-
-  saveForm(): void {
+  saveJsonForm(): void {
     if (!this.formName) {
       alert("Please enter a form name.");
       return;
@@ -158,7 +95,7 @@ export class ConfigComponent implements OnInit {
     const formData = {
       formName: this.formName,
       schema: {
-        formFields: this.formFields,
+        formFields: this.jsonFormFields,
       },
     };
 
@@ -173,6 +110,10 @@ export class ConfigComponent implements OnInit {
       }
     );
   }
+
+  onPreviewJsonForm(): void {
+    alert("This is just a preview of the generated JSON form");
+  }
+
+ 
 }
-
-
