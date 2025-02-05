@@ -31,8 +31,8 @@ export class ConfigComponent implements OnInit {
   formFields: FormField[] = [];
   form: FormGroup;
   formName: string = "";
-  showPreview: boolean = false;
-  showPreviewForSelected: boolean = false;
+  showGeneratedPreview: boolean = false;  // Manage generated form preview
+  showSelectedPreview: boolean = false;   // Manage selected form preview
   formNames: any[] = [];
   selectedFormId: string = '';
   schema: any = {};
@@ -66,7 +66,7 @@ export class ConfigComponent implements OnInit {
           this.formName = response.formName;
           this.formFields = response.schema.formFields;
           this.createForm();
-          this.showPreviewForSelected = true;
+          this.showSelectedPreview = true;  // Set the selected form preview visible
         },
         (error) => {
           console.error('Error fetching form data', error);
@@ -75,16 +75,33 @@ export class ConfigComponent implements OnInit {
     }
   }
 
+  generateForm(): void {
+    try {
+      const formStructure = JSON.parse(this.jsonInput);
+      if (formStructure && formStructure.formFields) {
+        this.formFields = formStructure.formFields;
+        this.createForm();
+        this.schema = formStructure;
+        this.showGeneratedPreview = true;  // Show generated form preview
+      } else {
+        alert("Invalid JSON structure!");
+      }
+    } catch (e) {
+      alert("Invalid JSON format!");
+      console.error("JSON parse error:", e);
+    }
+  }
+  
   createForm(): void {
     const group: { [key: string]: any } = {};
-
+  
     this.formFields.forEach((field: FormField) => {
       const validators = [];
-
+  
       if (field.required) {
         validators.push(Validators.required);
       }
-
+  
       if (field.validations) {
         if (field.validations.maxLength) {
           validators.push(Validators.maxLength(field.validations.maxLength));
@@ -99,7 +116,7 @@ export class ConfigComponent implements OnInit {
           validators.push(Validators.email);
         }
       }
-
+  
       group[field.name] = [
         {
           value: field.value || "",
@@ -108,24 +125,8 @@ export class ConfigComponent implements OnInit {
         validators,
       ];
     });
-
+  
     this.form = this.fb.group(group);
-  }
-
-  generateForm(): void {
-    try {
-      const formStructure = JSON.parse(this.jsonInput);
-      if (formStructure && formStructure.formFields) {
-        this.formFields = formStructure.formFields;
-        this.createForm();
-        this.schema = formStructure;
-      } else {
-        alert("Invalid JSON structure!");
-      }
-    } catch (e) {
-      alert("Invalid JSON format!");
-      console.error("JSON parse error:", e);
-    }
   }
 
   handleGeneratedForm(): void {
@@ -135,34 +136,13 @@ export class ConfigComponent implements OnInit {
   
       if (this.selectedFormId) {
         console.log("Showing preview for selected form...");
-        this.showPreviewForSelected = true;
+        this.showSelectedPreview = true;
       }
   
       this.submitContact();
     } else {
       console.log("Form is not valid. Please check the inputs.");
     }
-  }
-
-  hasError(fieldName: string, errorType: string): boolean {
-    const control = this.form.get(fieldName);
-    return control ? control.hasError(errorType) && control.touched : false;
-  }
-
-  getErrorMessage(fieldName: string): string {
-    const control = this.form.get(fieldName);
-    if (!control || !control.errors) return "";
-
-    const errors = control.errors;
-    if (errors["required"]) return "This field is required";
-    if (errors["maxlength"])
-      return `Maximum length is ${errors["maxlength"].requiredLength} characters`;
-    if (errors["minlength"])
-      return `Minimum length is ${errors["minlength"].requiredLength} characters`;
-    if (errors["pattern"]) return "Invalid format";
-    if (errors["email"]) return "Invalid email format";
-
-    return "Invalid input";
   }
 
   submitContact(): void {
@@ -194,3 +174,5 @@ export class ConfigComponent implements OnInit {
     );
   }
 }
+
+

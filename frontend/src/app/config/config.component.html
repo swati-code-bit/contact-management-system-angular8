@@ -1,6 +1,7 @@
 <div class="container">
   <h2>Enter JSON Structure to Generate Form</h2>
 
+  <!-- JSON input form -->
   <textarea
     [(ngModel)]="jsonInput"
     rows="10"
@@ -10,42 +11,46 @@
   <br />
   <button (click)="generateForm()">Generate Form</button>
 
-  <div *ngIf="showPreview && formFields.length > 0">
+  <!-- Generated form preview for JSON input -->
+  <div *ngIf="showGeneratedPreview && formFields.length > 0">
     <h2>Form Preview (Generated from JSON)</h2>
     <form [formGroup]="form" (ngSubmit)="submitContact()">
       <div *ngFor="let field of formFields" class="form-field">
         <label [for]="field.name">{{ field.label }}:</label>
 
-        <!-- Dynamic input fields -->
-        <ng-container *ngIf="['text', 'email', 'number', 'url'].includes(field.type)">
+        <!-- Text, email, number, url fields -->
+        <ng-container *ngIf="['text', 'email', 'number', 'url', 'password', 'date', 'time', 'tel', 'search'].includes(field.type)">
           <input
             [type]="field.type"
             [id]="field.name"
             [formControlName]="field.name"
             [placeholder]="field.placeholder || ''"
+            [required]="field.required"
+            [minLength]="field.validations?.minLength"
+            [maxLength]="field.validations?.maxLength"
+            [pattern]="field.validations?.pattern"
+            [readonly]="field.readonly"
+            [disabled]="field.disabled"
+            [min]="field.validations?.min"
+            [max]="field.validations?.max"
+            [step]="field.validations?.step"
             class="form-control"
           />
         </ng-container>
 
-        <ng-container *ngIf="field.type === 'password'">
-          <input
-            type="password"
-            [id]="field.name"
-            [formControlName]="field.name"
-            [placeholder]="field.placeholder || ''"
-            class="form-control"
-          />
-        </ng-container>
-
+        <!-- Checkbox field -->
         <ng-container *ngIf="field.type === 'checkbox'">
           <input
             type="checkbox"
             [id]="field.name"
             [formControlName]="field.name"
+            [checked]="field.checked"
+            [disabled]="field.disabled"
             class="form-checkbox"
           />
         </ng-container>
 
+        <!-- Radio field -->
         <ng-container *ngIf="field.type === 'radio'">
           <div class="radio-group">
             <div *ngFor="let option of field.options" class="radio-option">
@@ -54,6 +59,7 @@
                 [id]="field.name + '_' + option"
                 [formControlName]="field.name"
                 [value]="option"
+                [disabled]="field.disabled"
                 class="form-radio"
               />
               <label [for]="field.name + '_' + option">{{ option }}</label>
@@ -61,10 +67,12 @@
           </div>
         </ng-container>
 
+        <!-- Select field -->
         <ng-container *ngIf="field.type === 'select'">
           <select
             [id]="field.name"
             [formControlName]="field.name"
+            [disabled]="field.disabled"
             class="form-select"
           >
             <option value="">Select an option</option>
@@ -74,15 +82,44 @@
           </select>
         </ng-container>
 
+        <!-- Textarea field -->
         <ng-container *ngIf="field.type === 'textarea'">
           <textarea
             [id]="field.name"
             [formControlName]="field.name"
             [placeholder]="field.placeholder || ''"
+            [required]="field.required"
+            [readonly]="field.readonly"
+            [disabled]="field.disabled"
+            [minLength]="field.validations?.minLength"
+            [maxLength]="field.validations?.maxLength"
             class="form-textarea"
           ></textarea>
         </ng-container>
 
+        <!-- File upload field -->
+        <ng-container *ngIf="field.type === 'file'">
+          <input
+            type="file"
+            [id]="field.name"
+            [formControlName]="field.name"
+            [disabled]="field.disabled"
+            class="form-file"
+          />
+        </ng-container>
+
+        <!-- Color input -->
+        <ng-container *ngIf="field.type === 'color'">
+          <input
+            type="color"
+            [id]="field.name"
+            [formControlName]="field.name"
+            [disabled]="field.disabled"
+            class="form-color"
+          />
+        </ng-container>
+
+        <!-- Error message -->
         <div *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched" class="error-message">
           {{ getErrorMessage(field.name) }}
         </div>
@@ -91,6 +128,8 @@
       <button type="submit">Submit</button>
     </form>
   </div>
+
+  <hr />
 
   <!-- Form Name and Save Button -->
   <div>
@@ -112,51 +151,46 @@
 
   <button (click)="setForm()">Set Form</button>
 
-  <div *ngIf="selectedFormId">
-    <h3>Selected Form:</h3>
-    <p><strong>Form ID:</strong> {{ selectedFormId }}</p>
-    <p><strong>Form Name:</strong> {{ formName }}</p>
-  </div>
-
-  <!-- Generate Selected Set Form Button -->
-  <button (click)="handleGeneratedForm()">Generate Selected Set Form</button>
-
-  <!-- Preview of the form generated by selected ID -->
-  <div *ngIf="formFields.length > 0 && selectedFormId && showPreviewForSelected">
-    <h2>Form Preview (Generated from Selected Form)</h2>
+  <!-- Preview of selected form -->
+  <div *ngIf="showSelectedPreview">
+    <h3>Selected Form Preview:</h3>
     <form [formGroup]="form" (ngSubmit)="submitContact()">
       <div *ngFor="let field of formFields" class="form-field">
         <label [for]="field.name">{{ field.label }}:</label>
 
-        <ng-container *ngIf="['text', 'email', 'number', 'url'].includes(field.type)">
+        <!-- Text, email, number, url fields -->
+        <ng-container *ngIf="['text', 'email', 'number', 'url', 'password', 'date', 'time', 'tel', 'search'].includes(field.type)">
           <input
             [type]="field.type"
             [id]="field.name"
             [formControlName]="field.name"
             [placeholder]="field.placeholder || ''"
+            [required]="field.required"
+            [minLength]="field.validations?.minLength"
+            [maxLength]="field.validations?.maxLength"
+            [pattern]="field.validations?.pattern"
+            [readonly]="field.readonly"
+            [disabled]="field.disabled"
+            [min]="field.validations?.min"
+            [max]="field.validations?.max"
+            [step]="field.validations?.step"
             class="form-control"
           />
         </ng-container>
 
-        <ng-container *ngIf="field.type === 'password'">
-          <input
-            type="password"
-            [id]="field.name"
-            [formControlName]="field.name"
-            [placeholder]="field.placeholder || ''"
-            class="form-control"
-          />
-        </ng-container>
-
+        <!-- Checkbox -->
         <ng-container *ngIf="field.type === 'checkbox'">
           <input
             type="checkbox"
             [id]="field.name"
             [formControlName]="field.name"
+            [checked]="field.checked"
+            [disabled]="field.disabled"
             class="form-checkbox"
           />
         </ng-container>
 
+        <!-- Radio -->
         <ng-container *ngIf="field.type === 'radio'">
           <div class="radio-group">
             <div *ngFor="let option of field.options" class="radio-option">
@@ -165,6 +199,7 @@
                 [id]="field.name + '_' + option"
                 [formControlName]="field.name"
                 [value]="option"
+                [disabled]="field.disabled"
                 class="form-radio"
               />
               <label [for]="field.name + '_' + option">{{ option }}</label>
@@ -172,10 +207,12 @@
           </div>
         </ng-container>
 
+        <!-- Select -->
         <ng-container *ngIf="field.type === 'select'">
           <select
             [id]="field.name"
             [formControlName]="field.name"
+            [disabled]="field.disabled"
             class="form-select"
           >
             <option value="">Select an option</option>
@@ -185,15 +222,44 @@
           </select>
         </ng-container>
 
+        <!-- Textarea -->
         <ng-container *ngIf="field.type === 'textarea'">
           <textarea
             [id]="field.name"
             [formControlName]="field.name"
             [placeholder]="field.placeholder || ''"
+            [required]="field.required"
+            [readonly]="field.readonly"
+            [disabled]="field.disabled"
+            [minLength]="field.validations?.minLength"
+            [maxLength]="field.validations?.maxLength"
             class="form-textarea"
           ></textarea>
         </ng-container>
 
+        <!-- File upload -->
+        <ng-container *ngIf="field.type === 'file'">
+          <input
+            type="file"
+            [id]="field.name"
+            [formControlName]="field.name"
+            [disabled]="field.disabled"
+            class="form-file"
+          />
+        </ng-container>
+
+        <!-- Color picker -->
+        <ng-container *ngIf="field.type === 'color'">
+          <input
+            type="color"
+            [id]="field.name"
+            [formControlName]="field.name"
+            [disabled]="field.disabled"
+            class="form-color"
+          />
+        </ng-container>
+
+        <!-- Error message -->
         <div *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched" class="error-message">
           {{ getErrorMessage(field.name) }}
         </div>
