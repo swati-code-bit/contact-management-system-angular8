@@ -63,12 +63,14 @@ export class ContactService {
   }
 
   updateContact(contactId: string, contactData: any): Observable<any> {
+    console.log('Sending contactData to backend:', contactData); // Log data
     return this.http
       .put<any>(`${this.apiUrl}/${contactId}`, contactData, {
         headers: this.getHeaders(),
       })
       .pipe(catchError(this.handleError));
   }
+  
 
   deleteContact(contactId: string): Observable<void> {
     return this.http

@@ -1,7 +1,12 @@
 <div class="edit-contact-container">
   <h2>Edit Contact</h2>
   <div *ngIf="contact" class="edit-contact-form">
-    <form (ngSubmit)="saveContact()">
+    <form
+      (ngSubmit)="saveContact()"
+      #contactForm="ngForm"
+      [ngClass]="{ 'is-invalid': !contactForm.form.valid }"
+    >
+      <!-- Name -->
       <div>
         <label for="name">Name:</label>
         <input
@@ -10,9 +15,14 @@
           [(ngModel)]="contact.name"
           name="name"
           required
+          #name="ngModel"
         />
+        <div *ngIf="name.invalid && name.touched" class="error">
+          Name is required.
+        </div>
       </div>
 
+      <!-- Phone Number -->
       <div>
         <label for="ph_no">Phone Number:</label>
         <input
@@ -21,9 +31,15 @@
           [(ngModel)]="contact.ph_no"
           name="ph_no"
           required
+          pattern="^[0-9]{10}$"
+          #phNo="ngModel"
         />
+        <div *ngIf="phNo.invalid && phNo.touched" class="error">
+          Please enter a valid 10-digit phone number.
+        </div>
       </div>
 
+      <!-- Email -->
       <div>
         <label for="email">Email:</label>
         <input
@@ -32,9 +48,15 @@
           [(ngModel)]="contact.email"
           name="email"
           required
+          email
+          #email="ngModel"
         />
+        <div *ngIf="email.invalid && email.touched" class="error">
+          Please enter a valid email address.
+        </div>
       </div>
 
+      <!-- Profile Picture -->
       <div>
         <label for="profile_pic">Profile Picture (URL or File):</label>
         <input
@@ -46,17 +68,22 @@
         <small>Provide a URL or file path for the profile picture</small>
       </div>
 
+      <!-- Birthday -->
       <div>
         <label for="bday">Birthday:</label>
         <input
           type="date"
           [(ngModel)]="contact.bday"
           name="bday"
-          [value]="contact.bday"
           required
+          #bday="ngModel"
         />
+        <div *ngIf="bday.invalid && bday.touched" class="error">
+          Please provide a valid birthday.
+        </div>
       </div>
 
+      <!-- Address -->
       <div>
         <label for="address">Address:</label>
         <textarea
@@ -64,9 +91,14 @@
           [(ngModel)]="contact.address"
           name="address"
           required
+          #address="ngModel"
         ></textarea>
+        <div *ngIf="address.invalid && address.touched" class="error">
+          Address is required.
+        </div>
       </div>
 
+      <!-- Category and Subcategory -->
       <div>
         <label for="mainCategory">Main Category:</label>
         <select
@@ -75,11 +107,15 @@
           name="mainCategory"
           required
           (change)="onMainCategoryChange()"
+          #mainCategory="ngModel"
         >
           <option value="Personal">Personal</option>
           <option value="Professional">Professional</option>
           <option value="Others">Others</option>
         </select>
+        <div *ngIf="mainCategory.invalid && mainCategory.touched" class="error">
+          Main category is required.
+        </div>
       </div>
 
       <div>
@@ -89,6 +125,7 @@
           [(ngModel)]="contact.category.subcategory"
           name="subcategory"
           required
+          #subcategory="ngModel"
         >
           <option
             *ngFor="let subcategory of subcategoryOptions"
@@ -97,10 +134,15 @@
             {{ subcategory }}
           </option>
         </select>
+        <div *ngIf="subcategory.invalid && subcategory.touched" class="error">
+          Subcategory is required.
+        </div>
       </div>
 
       <div class="form-actions">
-        <button type="submit">Update Contact</button>
+        <button type="submit" [disabled]="!contactForm.form.valid">
+          Update Contact
+        </button>
         <button type="button" (click)="cancelEdit()">Cancel</button>
       </div>
     </form>

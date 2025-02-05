@@ -86,6 +86,8 @@ export class EditContactComponent implements OnInit {
   }
 
   saveContact(): void {
+
+    console.log('Contact data to be updated:', this.contact);
     if (this.contact.bday) {
       this.contact.bday = moment(this.contact.bday, 'YYYY-MM-DD').isValid()
         ? moment(this.contact.bday).format('YYYY-MM-DD')
@@ -94,7 +96,7 @@ export class EditContactComponent implements OnInit {
 
     this.contactService.updateContact(this.contactId, this.contact).subscribe(
       (updatedContact) => {
-        console.log('Contact updated successfully');
+        console.log('Updated Contact:', updatedContact);
         this.router.navigate(['/home']);
       },
       (error) => {
