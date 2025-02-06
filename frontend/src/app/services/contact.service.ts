@@ -48,17 +48,20 @@ export class ContactService {
       .pipe(catchError(this.handleError));
   }
 
-  // createContact(contact: Contact): Observable<Contact> {
-  //   return this.http
-  //     .post<Contact>(`${this.apiUrl}`, contact, {
-  //       headers: this.getHeaders(),
-  //     })
-  //     .pipe(catchError(this.handleError));
-  // }
-
-  createContact(contact: any): Observable<any> {
+  createContact(contact: Contact): Observable<Contact> {
     return this.http
-      .post<any>(this.apiUrl, contact, { headers: this.getHeaders() })
+      .post<Contact>(`${this.apiUrl}`, contact, {
+        headers: this.getHeaders(),
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  createDynamicContact(contact: Contact): Observable<Contact> {
+    console.log('incontact ctrller');
+    return this.http
+      .post<Contact>(`${this.apiUrl}/add-dynamic-contact`, contact, {
+        headers: this.getHeaders(),
+      })
       .pipe(catchError(this.handleError));
   }
 

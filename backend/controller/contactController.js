@@ -1,17 +1,6 @@
 const Contact = require("../models/contact");
-const { MongoClient, ObjectId } = require('mongodb');
 const moment = require("moment");
 const mongoose = require("mongoose");
-
-const uri = 'mongodb://localhost:27017';
-const dbName = 'trial_db';
-const collectionName = 'contacts';
-
-
-const generateUniqueContactId = async () => {
-  const contactId = new ObjectId().toString();
-  return contactId;
-};
 
 const formatDateToDDMMYYYY = (dateStr) => {
   let momentDate = moment(dateStr, "DD-MM-YYYY", true);
@@ -29,106 +18,109 @@ const isValidDate = (dateStr) => {
   return date.isValid();
 };
 
-// exports.createContact = async (req, res) => {
-//   const {
-//     name,
-//     ph_no,
-//     email,
-//     profile_pic,
-//     bday,
-//     address,
-//     category,
-//     contactid,
-//   } = req.body;
+exports.createContact = async (req, res) => {
+  const {
+    name,
+    ph_no,
+    email,
+    profile_pic,
+    bday,
+    address,
+    category,
+    contactid,
+  } = req.body;
 
-//   try {
-//     if (!bday) {
-//       return res.status(400).json({
-//         message: "Birthday is required in DD-MM-YYYY format.",
-//       });
-//     }
-
-//     if (!isValidDate(bday)) {
-//       return res.status(400).json({
-//         message:
-//           "Invalid date format for birthday. Use DD-MM-YYYY format (e.g., 31-12-2023).",
-//       });
-//     }
-
-//     const randomContactId = Math.floor(Math.random() * 1000000000);
-
-//     if (!category || !category.mainCategory || !category.subcategory) {
-//       return res.status(400).json({
-//         message: "Both category and subcategory are required.",
-//       });
-//     }
-
-//     const contactId = contactid || randomContactId;
-
-//     const formattedBday = formatDateToDDMMYYYY(bday);
-
-//     if (!formattedBday) {
-//       return res.status(400).json({
-//         message: "Could not format the provided birthday correctly.",
-//       });
-//     }
-
-//     const contact = new Contact({
-//       name,
-//       ph_no,
-//       email,
-//       profile_pic,
-//       bday: formattedBday,
-//       address,
-//       category: {
-//         mainCategory: category.mainCategory,
-//         subcategory: category.subcategory,
-//       },
-//       contactid: contactId,
-//     });
-
-//     await contact.save();
-
-//     res.status(201).json(contact);
-//   } catch (error) {
-//     console.error("Error creating contact:", error);
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-
-exports.createContact = async (contactData) => {
-  console.log('inside contact controller');
   try {
-    // Generate a random contact ID if contactid is not provided
+    if (!bday) {
+      return res.status(400).json({
+        message: "Birthday is required in DD-MM-YYYY format.",
+      });
+    }
+
+    if (!isValidDate(bday)) {
+      return res.status(400).json({
+        message:
+          "Invalid date format for birthday. Use DD-MM-YYYY format (e.g., 31-12-2023).",
+      });
+    }
+
     const randomContactId = Math.floor(Math.random() * 1000000000);
-    
-    // If the contact data doesn't contain contactid, use the random one
-    const contactId = contactData.contactid || randomContactId;
 
-    // Insert the contact data into the MongoDB collection
-    const client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    const db = client.db(dbName);
-    const contactsCollection = db.collection(collectionName);
+    if (!category || !category.mainCategory || !category.subcategory) {
+      return res.status(400).json({
+        message: "Both category and subcategory are required.",
+      });
+    }
 
-    const contact = {
-      ...contactData,
+    const contactId = contactid || randomContactId;
+
+    const formattedBday = formatDateToDDMMYYYY(bday);
+
+    if (!formattedBday) {
+      return res.status(400).json({
+        message: "Could not format the provided birthday correctly.",
+      });
+    }
+
+    const contact = new Contact({
+      name,
+      ph_no,
+      email,
+      profile_pic,
+      bday: formattedBday,
+      address,
+      category: {
+        mainCategory: category.mainCategory,
+        subcategory: category.subcategory,
+      },
       contactid: contactId,
-    };
+    });
 
-    const result = await contactsCollection.insertOne(contact);
+    await contact.save();
 
-    client.close();
-
-    return { message: 'Contact added successfully', contact: result.ops[0] };
+    res.status(201).json(contact);
   } catch (error) {
-    console.error("Error creating contact:", error.message);
-    throw error;
+    console.error("Error creating contact:", error);
+    res.status(500).json({ message: error.message });
   }
 };
 
+exports.createDynamicContact = async (req, res) => {
+  console.log("in contact controller");
 
+  try {
+    const { contactData } = req.body; // The entire body is stored as contactData
 
+    // Validate that contactData is an object
+    if (!contactData || typeof contactData !== "object") {
+      return res
+        .status(400)
+        .json({ message: "Invalid contact data. Expected an object." });
+    }
+
+    // Access the "contacts" collection directly
+    const contactsCollection = mongoose.connection.collection("contacts"); // Access the contacts collection directly
+
+    // Insert the data directly into the collection
+    const result = await contactsCollection.insertOne(contactData); // Using insertOne to insert a single document
+
+    // Since the result no longer includes ops, the inserted document can be accessed directly:
+    const insertedContact = await contactsCollection.findOne({
+      _id: result.insertedId,
+    }); // Fetch the full inserted document using the insertedId
+
+    // Respond with success message and the inserted document
+    res.status(201).json({
+      message: "Contact created successfully.",
+      contact: insertedContact, // Return the full inserted document
+    });
+  } catch (error) {
+    console.error("Error creating contact:", error);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+};
 
 exports.getAllContacts = async (req, res) => {
   try {
@@ -205,13 +197,13 @@ exports.updateContact = async (req, res) => {
     }
 
     if (bday) {
-      const formattedBday = moment(bday, "DD-MM-YYYY").toDate(); 
+      const formattedBday = moment(bday, "DD-MM-YYYY").toDate();
       if (!formattedBday) {
         return res
           .status(400)
           .json({ message: "Invalid date format for birthday." });
       }
-      contact.bday = formattedBday; 
+      contact.bday = formattedBday;
     }
 
     if (name !== undefined) contact.name = name;

@@ -52,5 +52,25 @@ export class AddContactDynamicComponent implements OnInit {
 
   addContact(formData: any): void {
     console.log("Received data in add dynamic contact form:", formData);
+  
+    // Assuming `formData` contains the entire contact data and should be sent as an object.
+    const contactData = {
+      contactData: formData, // Wrap formData in contactData
+    };
+  
+    // Call the createDynamicContact method from the service
+    this.contactService.createDynamicContact(contactData).subscribe(
+      (response) => {
+        console.log('Contact created successfully:', response);
+        // Show success message or perform any other actions like redirecting
+        alert("Dynamic Contact Created Successfully!");
+      },
+      (error) => {
+        console.error("Error creating dynamic contact:", error);
+        // Handle error properly, maybe show an error message
+        alert("An error occurred while creating the contact.");
+      }
+    );
   }
+  
 }
