@@ -89,30 +89,25 @@ exports.createDynamicContact = async (req, res) => {
   console.log("in contact controller");
 
   try {
-    const { contactData } = req.body; // The entire body is stored as contactData
+    const { contactData } = req.body;
 
-    // Validate that contactData is an object
     if (!contactData || typeof contactData !== "object") {
       return res
         .status(400)
         .json({ message: "Invalid contact data. Expected an object." });
     }
 
-    // Access the "contacts" collection directly
-    const contactsCollection = mongoose.connection.collection("contacts"); // Access the contacts collection directly
+    const contactsCollection = mongoose.connection.collection("contacts"); 
 
-    // Insert the data directly into the collection
-    const result = await contactsCollection.insertOne(contactData); // Using insertOne to insert a single document
+    const result = await contactsCollection.insertOne(contactData);
 
-    // Since the result no longer includes ops, the inserted document can be accessed directly:
     const insertedContact = await contactsCollection.findOne({
       _id: result.insertedId,
-    }); // Fetch the full inserted document using the insertedId
+    });
 
-    // Respond with success message and the inserted document
     res.status(201).json({
       message: "Contact created successfully.",
-      contact: insertedContact, // Return the full inserted document
+      contact: insertedContact,
     });
   } catch (error) {
     console.error("Error creating contact:", error);

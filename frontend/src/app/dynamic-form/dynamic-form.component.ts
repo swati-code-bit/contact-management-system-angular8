@@ -13,11 +13,10 @@ import { FormField } from "../models/form-field.model";
   styleUrls: ["./dynamic-form.component.css"],
 })
 export class DynamicFormComponent implements OnChanges {
-  @Input() formFields: FormField[] = []; // Form fields passed from parent
-  @Input() form: FormGroup; // The form group passed from parent (initialized by parent)
+  @Input() formFields: FormField[] = []; 
+  @Input() form: FormGroup;
   @Input() previewMode: boolean = false;
-
-  @Input() customSubmitHandler: Function; // Accepts custom submit function from parent
+  @Input() customSubmitHandler: Function;
 
   @Output() formSubmit: EventEmitter<any> = new EventEmitter<any>();
   
@@ -83,7 +82,7 @@ export class DynamicFormComponent implements OnChanges {
     console.log("Form before submit:", this.form);
     if (this.form && this.form.valid) {
       console.log("Form Submitted!", this.form.value);
-      this.formSubmit.emit(this.form.value);  // Emit form data to parent component
+      this.formSubmit.emit(this.form.value);
       if (this.customSubmitHandler) {
         this.customSubmitHandler(this.form.value);
       }

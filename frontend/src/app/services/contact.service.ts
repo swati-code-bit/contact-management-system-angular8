@@ -56,14 +56,15 @@ export class ContactService {
       .pipe(catchError(this.handleError));
   }
 
-  createDynamicContact(contact: Contact): Observable<Contact> {
-    console.log('incontact ctrller');
+  createDynamicContact(contactData: any): Observable<any> {
+    console.log('In createDynamicContact:', contactData);
     return this.http
-      .post<Contact>(`${this.apiUrl}/add-dynamic-contact`, contact, {
+      .post<any>(`${this.apiUrl}/add-dynamic-contact`, { contactData }, {  // Wrap the contactData in an object if your backend expects it
         headers: this.getHeaders(),
       })
       .pipe(catchError(this.handleError));
   }
+  
 
   updateContact(contactId: string, contactData: any): Observable<any> {
     console.log("Sending contactData to backend:", contactData);

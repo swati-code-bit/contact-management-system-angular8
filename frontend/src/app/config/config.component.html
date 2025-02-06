@@ -16,9 +16,6 @@
     (formSubmit)="onSubmitJsonForm($event)"
   ></app-dynamic-form>
 
-  <!-- Show the submit button only after the form is generated -->
-  <!-- <button *ngIf="showJsonFormPreview" type="submit" (click)="onSubmitJsonForm()">Submit</button> -->
-
   <hr />
 
   <h2>Select Form</h2>
@@ -40,6 +37,4 @@
     [previewMode]="showDropdownFormPreview"
     (formSubmit)="onSubmitDropdownForm($event)"
   ></app-dynamic-form>
-
-  <!-- <button *ngIf="showDropdownFormPreview" type="submit" (click)="onSubmitDropdownForm()">Submit</button> -->
 </div>

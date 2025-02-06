@@ -27,7 +27,7 @@ export class ConfigComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dropdownForm = this.fb.group({}); // Initialize the form here
+    this.dropdownForm = this.fb.group({}); 
 
     const storedFormId = localStorage.getItem("selectedFormId");
     if (storedFormId) {
@@ -115,7 +115,6 @@ export class ConfigComponent implements OnInit {
   }
 
   onSubmitJsonForm(formData: any): void {
-    // Show alert for preview
     alert("This is just a preview of the generated JSON form");
     console.log("Received form data from DynamicFormComponent:", formData);
   }
