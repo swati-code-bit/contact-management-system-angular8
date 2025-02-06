@@ -96,36 +96,23 @@ const isValidDate = (dateStr) => {
 //   }
 // };
 
+
 exports.createContact = async (contactData) => {
+  console.log('inside contact controller');
   try {
-    if (!contactData.bday) {
-      throw new Error("Birthday is required in DD-MM-YYYY format.");
-    }
-
-    if (!isValidDate(contactData.bday)) {
-      throw new Error("Invalid date format for birthday. Use DD-MM-YYYY format (e.g., 31-12-2023).");
-    }
-
+    // Generate a random contact ID if contactid is not provided
     const randomContactId = Math.floor(Math.random() * 1000000000);
-
-    if (!contactData.category || !contactData.category.mainCategory || !contactData.category.subcategory) {
-      throw new Error("Both category and subcategory are required.");
-    }
-
+    
+    // If the contact data doesn't contain contactid, use the random one
     const contactId = contactData.contactid || randomContactId;
-    const formattedBday = formatDateToDDMMYYYY(contactData.bday);
 
-    if (!formattedBday) {
-      throw new Error("Could not format the provided birthday correctly.");
-    }
-
+    // Insert the contact data into the MongoDB collection
     const client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     const db = client.db(dbName);
     const contactsCollection = db.collection(collectionName);
 
     const contact = {
       ...contactData,
-      bday: formattedBday,
       contactid: contactId,
     };
 

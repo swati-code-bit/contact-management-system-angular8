@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable, Subject } from "rxjs";
+import { catchError } from "rxjs/operators";
 
 interface Contact {
   contactid: number;
@@ -18,10 +18,10 @@ interface Contact {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ContactService {
-  private apiUrl = 'http://localhost:5000/api/contacts';
+  private apiUrl = "http://localhost:5000/api/contacts";
   private contactsUpdated = new Subject<void>();
   contactsUpdated$ = this.contactsUpdated.asObservable();
   private filterUpdated = new Subject<any>();
@@ -30,11 +30,11 @@ export class ContactService {
   constructor(private http: HttpClient) {}
 
   private getHeaders(): HttpHeaders {
-    return new HttpHeaders().set('Content-Type', 'application/json');
+    return new HttpHeaders().set("Content-Type", "application/json");
   }
 
   private handleError(error: any): Observable<never> {
-    console.error('API Error:', error);
+    console.error("API Error:", error);
     throw error;
   }
 
@@ -59,18 +59,17 @@ export class ContactService {
   createContact(contact: any): Observable<any> {
     return this.http
       .post<any>(this.apiUrl, contact, { headers: this.getHeaders() })
-      .pipe(catchError(this.handleError)); 
+      .pipe(catchError(this.handleError));
   }
 
   updateContact(contactId: string, contactData: any): Observable<any> {
-    console.log('Sending contactData to backend:', contactData);
+    console.log("Sending contactData to backend:", contactData);
     return this.http
       .put<any>(`${this.apiUrl}/${contactId}`, contactData, {
         headers: this.getHeaders(),
       })
       .pipe(catchError(this.handleError));
   }
-  
 
   deleteContact(contactId: string): Observable<void> {
     return this.http
@@ -79,7 +78,6 @@ export class ContactService {
       })
       .pipe(catchError(this.handleError));
   }
-  
 
   notifyContactsUpdated(): void {
     this.contactsUpdated.next();
@@ -102,7 +100,7 @@ export class ContactService {
     endDate: string
   ): Observable<Contact[]> {
     const body = {
-      searchType: 'birthday',
+      searchType: "birthday",
       searchInput: `${startDate} to ${endDate}`,
     };
     return this.http

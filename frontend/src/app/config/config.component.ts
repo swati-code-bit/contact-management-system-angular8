@@ -9,10 +9,10 @@ import { FormField } from "../models/form-field.model";
   styleUrls: ["./config.component.css"],
 })
 export class ConfigComponent implements OnInit {
-  jsonFormInput: string = ""; 
+  jsonFormInput: string = "";
   jsonFormFields: FormField[] = [];
   dropdownFormFields: FormField[] = [];
-  jsonForm: FormGroup; 
+  jsonForm: FormGroup;
   dropdownForm: FormGroup;
   formName: string = "";
   showJsonFormPreview: boolean = false;
@@ -21,15 +21,14 @@ export class ConfigComponent implements OnInit {
   selectedFormId: string = "";
   formSchema: any = {};
 
-  constructor(
-    private fb: FormBuilder,
-    private formService: FormService
-  ) {
+  constructor(private fb: FormBuilder, private formService: FormService) {
     this.jsonForm = this.fb.group({});
     this.dropdownForm = this.fb.group({});
   }
 
   ngOnInit(): void {
+    this.dropdownForm = this.fb.group({}); // Initialize the form here
+
     const storedFormId = localStorage.getItem("selectedFormId");
     if (storedFormId) {
       this.selectedFormId = storedFormId;
@@ -115,5 +114,14 @@ export class ConfigComponent implements OnInit {
     alert("This is just a preview of the generated JSON form");
   }
 
- 
+  onSubmitJsonForm(formData: any): void {
+    // Show alert for preview
+    alert("This is just a preview of the generated JSON form");
+    console.log("Received form data from DynamicFormComponent:", formData);
+  }
+
+  onSubmitDropdownForm(formData: any): void {
+    alert("This is just a preview of the selected dropdown form");
+    console.log("Received dropdown form data from DynamicFormComponent:", formData);
+  }
 }

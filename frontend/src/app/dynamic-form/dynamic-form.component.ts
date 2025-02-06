@@ -1,5 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from "@angular/core";
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from "@angular/forms";
 import { FormField } from "../models/form-field.model";
 
 @Component({
@@ -8,50 +13,43 @@ import { FormField } from "../models/form-field.model";
   styleUrls: ["./dynamic-form.component.css"],
 })
 export class DynamicFormComponent implements OnChanges {
-  @Input() formFields: FormField[] = [];
-  @Input() form: FormGroup;
+  @Input() formFields: FormField[] = []; // Form fields passed from parent
+  @Input() form: FormGroup; // The form group passed from parent (initialized by parent)
   @Input() previewMode: boolean = false;
+
+  @Input() customSubmitHandler: Function; // Accepts custom submit function from parent
+
+  @Output() formSubmit: EventEmitter<any> = new EventEmitter<any>();
+  
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["formFields"] && this.formFields.length) {
       this.createDynamicForm();
+      console.log("Form Initialized:", this.form);
     }
   }
 
+  constructor(private fb: FormBuilder) {}
+
   createDynamicForm(): void {
-    if (this.formFields && this.formFields.length) {
-      const group: { [key: string]: any } = {};
+    let group: any = {};
 
-      this.formFields.forEach((field: FormField) => {
-        const validators = [];
+    this.formFields.forEach((field) => {
+      const validators = field.required ? [Validators.required] : [];
 
-        if (field.required) {
-          validators.push(Validators.required);
-        }
+      if (field.type === "checkbox" || field.type === "radio") {
+        group[field.name] = [
+          { value: field.value || false, disabled: field.disabled },
+        ];
+      } else {
+        group[field.name] = [
+          { value: field.value || "", disabled: field.disabled },
+          validators,
+        ];
+      }
+    });
 
-        if (field.validations) {
-          if (field.validations.maxLength) {
-            validators.push(Validators.maxLength(field.validations.maxLength));
-          }
-          if (field.validations.minLength) {
-            validators.push(Validators.minLength(field.validations.minLength));
-          }
-          if (field.validations.pattern) {
-            validators.push(Validators.pattern(field.validations.pattern));
-          }
-          if (field.validations.email) {
-            validators.push(Validators.email);
-          }
-        }
-
-        group[field.name] = new FormControl(
-          { value: field.value || "", disabled: field.disabled || false },
-          validators
-        );
-      });
-
-      this.form = new FormGroup(group);
-    }
+    this.form = this.fb.group(group);
   }
 
   isFieldValid(fieldName: string): boolean {
@@ -80,4 +78,19 @@ export class DynamicFormComponent implements OnChanges {
 
     return "Invalid field";
   }
+
+  onSubmit(): void {
+    console.log("Form before submit:", this.form);
+    if (this.form && this.form.valid) {
+      console.log("Form Submitted!", this.form.value);
+      this.formSubmit.emit(this.form.value);  // Emit form data to parent component
+      if (this.customSubmitHandler) {
+        this.customSubmitHandler(this.form.value);
+      }
+    } else {
+      console.error("Form is invalid or not initialized", this.form);
+    }
+  }
+  
+  
 }

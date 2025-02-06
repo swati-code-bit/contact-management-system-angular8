@@ -1,1 +1,8 @@
-<p>add-contact-dynamic works!</p>
+<div *ngIf="form && formFields && formFields.length">
+  <app-dynamic-form
+    [formFields]="formFields"
+    [form]="form"
+    (formSubmit)="addContact($event)"
+  ></app-dynamic-form>
+  <!-- <button type="button" (click)="onSubmit()" [disabled]="form.invalid">Submit</button> -->
+</div>
